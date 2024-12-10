@@ -1,11 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Banner Gallery</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    
+<body class="bg-neutral-100 h-screen w-screen flex flex-row">
+    <div class="mx-56 my-20 w-full h-full flex flex-col gap-y-6">
+        <div class="flex flex-row justify-between items-center">
+            <h1 class="text-neutral-700 font-semibold text-4xl">Banner Gallery</h1>
+            <label class="input input-bordered flex items-center rounded-full gap-4 bg-neutral-200 w-96">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  class="h-4 w-4 opacity-70">
+                  <path
+                    fill-rule="evenodd"
+                    d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                    clip-rule="evenodd" />
+                </svg>
+                <input id="search" type="text" class="grow" placeholder="Search keyword" />
+              </label>
+        </div>
+
+        <div class="flex flex-wrap w-full gap-4">
+            <label for="all-images" class="btn btn-outline rounded-full bg-[#FFA3012F] border-[#FFA301] text-neutral-700 font-normal">
+                <input id="all-images" type="checkbox" class="hidden">
+                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#FFA301"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-layout-grid"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /></svg> 
+                All images
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                3D text
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Sports
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Casino
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Live Casino
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Lotto
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Virtual
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Chess Game
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Jackpot
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Table Games
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Esports
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                AI-generated
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Minimalist
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Match banner
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                First deposit bonus
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                VIP
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Trending
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Rebate
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                New promotion
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Welcome bonus
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Evolution
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Ezugi
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Pragmatic Play
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Pocket Games Soft
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Free rewards
+            </label>
+            <label class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                <input type="checkbox" class="hidden">
+                Parlay
+            </label>
+            <button class="btn btn-outline rounded-full text-neutral-700 font-normal w-fit">
+                See more
+                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-dots"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+            </button>
+        </div>
+        
+        <div id="images-container" class="grid grid-cols-5 grid-rows-3 gap-4">
+
+        </div>
+    </div>
+    <div></div>
 </body>
+<script src="script.js"></script>
 </html>
