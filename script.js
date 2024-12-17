@@ -1,5 +1,6 @@
 const imageContainer = document.getElementById('image-container');
 
+//for All images button
 const showAllImages = document.getElementById('all-images')
 showAllImages.addEventListener('click', () => {
     if(showAllImages.checked == true){
@@ -9,6 +10,7 @@ showAllImages.addEventListener('click', () => {
     }
 })
 
+//Filter buttons
 const categoryBtn = document.querySelectorAll('.categories')
 categoryBtn.forEach(element => {
    element.addEventListener('click', () => {
@@ -21,11 +23,12 @@ categoryBtn.forEach(element => {
         element.classList.remove('border-[#FF9200]')
         element.classList.replace('text-white', 'text-neutral-700')
     }
-
     //console.log(element.children[0].id);
    })
 });
 
+//Might change this. Nalimutan ko na we have multiple categories for each banner, but same approach para malinis HTML natin. We can set categories and images here
+//We can also make this as 2d array rin. Ginawa ko lang sya object kasi ayon una kong naisip haha
 let imageClasses = {
     images: [['PROMOTION','EVODECEXCPROMO-1224.png'],
             ['LIVECASINO', 'EZUGIREBATEBONUS-1224.png'],
@@ -37,7 +40,7 @@ let imageClasses = {
             ['SPONSORSHIP', 'F1BANNER02-1224.png']]
 }
 
-
+//then bahala na itong for loop to append all images sa image container and set classes in its own
 for(let i = 0; i <= imageClasses.images.length - 1; i++){
     let imageDiv = document.createElement('div');
     imageDiv.innerHTML = `<img class="${imageClasses.images[i][0]}" src="src/${imageClasses.images[i][1]}">`
