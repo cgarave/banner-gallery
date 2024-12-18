@@ -42,6 +42,7 @@ let imageClasses = {
 }
 
 //then bahala na itong for loop to append all images sa image container and set classes in its own
+let selectedImagesSet = new Set();
 for(let i = 0; i <= imageClasses.images.length - 1; i++){
     let imageDiv = document.createElement('div');
     imageDiv.innerHTML = `<img class="${imageClasses.images[i][0]}" src="src/${imageClasses.images[i][1]}">`
@@ -51,7 +52,12 @@ for(let i = 0; i <= imageClasses.images.length - 1; i++){
     //add selected images to selected images container
     imageDiv.addEventListener('click', (event) => {
         let image = event.target.attributes[1].value
-        appendSelectedImages(image);
+
+        if(!selectedImagesSet.has(image) && selectedContainer.children.length < 3) {
+            selectedImagesSet.add(image); //to prevent from duplicating selected images sa selected section
+            document.getElementById('selectedImg-card').classList.remove('hidden')
+            appendSelectedImages(image);
+        }
         //console.log(event.target.attributes[1].value);  
     })
 }
@@ -69,7 +75,13 @@ function appendSelectedImages(selected){
     selectedDiv.addEventListener('click', (event) => {
         if(event.target.id === 'remove' || event.target.parentElement.id === 'remove'){
             selectedContainer.removeChild(selectedDiv)
+            selectedImagesSet.delete(selected)
+            
+        }
+        if(selectedContainer.children.length == 0){
+            document.getElementById('selectedImg-card').classList.add('hidden')
         }
     })
+
 }
 
