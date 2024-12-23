@@ -1,28 +1,31 @@
 const imageContainer = document.getElementById('image-container');
+const selectModal = document.getElementById('select-modal')
+const selectBtn = document.getElementById('select-button')
+const imagePreview = document.getElementById('image-card')
 const selectedContainer = document.getElementById('selectedImg-container');
 
 //for All images button
-const showAllImages = document.getElementById('all-images')
+const showAllImages = document.getElementById('all-images');
 showAllImages.addEventListener('click', () => {
     if(showAllImages.checked == true){
         for(i = 0; i <= imageContainer.children.length; i++){
-            imageContainer.children[i].classList.remove('hidden')
+            imageContainer.children[i].classList.remove('hidden');
         }
     }
 })
 
 //Filter buttons
-const categoryBtn = document.querySelectorAll('.categories')
+const categoryBtn = document.querySelectorAll('.categories');
 categoryBtn.forEach(element => {
    element.addEventListener('click', () => {
     if(element.children[0].checked == true){
-        element.classList.add('bg-[#FF9200]')
-        element.classList.add('border-[#FF9200]')
-        element.classList.replace('text-neutral-700', 'text-white')
+        element.classList.add('bg-[#FF9200]');
+        element.classList.add('border-[#FF9200]');
+        element.classList.replace('text-neutral-700', 'text-white');
     } else if (element.children[0].checked == false) {
-        element.classList.remove('bg-[#FF9200]')
-        element.classList.remove('border-[#FF9200]')
-        element.classList.replace('text-white', 'text-neutral-700')
+        element.classList.remove('bg-[#FF9200]');
+        element.classList.remove('border-[#FF9200]');
+        element.classList.replace('text-white', 'text-neutral-700');
     }
     //console.log(element.children[0].id);
    })
@@ -43,24 +46,27 @@ let imageClasses = {
 
 //then bahala na itong for loop to append all images sa image container and set classes in its own
 let selectedImagesSet = new Set();
-for(let i = 0; i <= imageClasses.images.length - 1; i++){
-    let imageDiv = document.createElement('div');
-    imageDiv.innerHTML = `<img class="${imageClasses.images[i][0]}" src="src/${imageClasses.images[i][1]}">`
-    imageDiv.classList.add('w-64', 'h-64', 'overflow-hidden', 'cursor-pointer', 'rounded-lg', 'bg-red-400', 'hover:border-2', 'hover:border-[#FF9200]')
-    imageContainer.appendChild(imageDiv)
+// for(let i = 0; i <= imageClasses.images.length - 1; i++){
+//     let imageDiv = document.createElement('div');
+//     imageDiv.innerHTML = `  <div class="absolute bottom-5 py-2 px-4 bg-[#FF9200] rounded-full text-white hidden">Selected</div>
+//                             <img class="${imageClasses.images[i][0]}" src="src/${imageClasses.images[i][1]}">`
+//     imageDiv.classList.add('w-64', 'h-64', 'overflow-hidden', 'cursor-pointer', 'rounded-lg', 'bg-red-400', 'hover:border-4', 'hover:border-[#FF9200]', 'relative', 'flex', 'justify-center');
+//     imageContainer.appendChild(imageDiv);
 
-    //add selected images to selected images container
-    imageDiv.addEventListener('click', (event) => {
-        let image = event.target.attributes[1].value
+//     //add selected images to selected images container
+//     imageDiv.addEventListener('click', (event) => {
+//         let image = event.target.attributes[1].value;
+//         //selectModal.classList.remove('hidden');
 
-        if(!selectedImagesSet.has(image) && selectedContainer.children.length < 3) {
-            selectedImagesSet.add(image); //to prevent from duplicating selected images sa selected section
-            document.getElementById('selectedImg-card').classList.remove('hidden')
-            appendSelectedImages(image);
-        }
-        //console.log(event.target.attributes[1].value);  
-    })
-}
+//         imageDiv.children[0].classList.remove('hidden');
+//         if(!selectedImagesSet.has(image) && selectedContainer.children.length < 3) {
+//             selectedImagesSet.add(image); //to prevent from duplicating selected images sa selected section
+//             document.getElementById('selectedImg-card').classList.remove('hidden');
+//             appendSelectedImages(image);
+//         }
+//     })
+
+// }
 
 function appendSelectedImages(selected){
     const selectedDiv = document.createElement('div');
@@ -70,18 +76,66 @@ function appendSelectedImages(selected){
                             <div class="group-hover:block absolute z-0 bg-white opacity-20 h-full w-full hidden"></div>
                             <img src="${selected}">`
     selectedDiv.classList.add('group', 'rounded-lg', 'overflow-hidden', 'relative');
-    selectedContainer.appendChild(selectedDiv)
+    selectedContainer.appendChild(selectedDiv);
 
     selectedDiv.addEventListener('click', (event) => {
         if(event.target.id === 'remove' || event.target.parentElement.id === 'remove'){
-            selectedContainer.removeChild(selectedDiv)
-            selectedImagesSet.delete(selected)
+            selectedContainer.removeChild(selectedDiv);
+            selectedImagesSet.delete(selected);
+            
             
         }
         if(selectedContainer.children.length == 0){
-            document.getElementById('selectedImg-card').classList.add('hidden')
+            document.getElementById('selectedImg-card').classList.add('hidden');
         }
     })
 
 }
 
+
+
+//refactor
+for(let i = 0; i <= imageClasses.images.length - 1; i++){
+    let imageDiv = document.createElement('div');
+    imageDiv.innerHTML = `  <div class="absolute bottom-5 py-2 px-4 bg-[#FF9200] rounded-full text-white hidden">Selected</div>
+                            <img class="${imageClasses.images[i][0]}" src="src/${imageClasses.images[i][1]}">`
+    imageDiv.classList.add('w-64', 'h-64', 'overflow-hidden', 'cursor-pointer', 'rounded-lg', 'bg-red-400', 'hover:border-4', 'hover:border-[#FF9200]', 'relative', 'flex', 'justify-center');
+    imageContainer.appendChild(imageDiv);
+
+    //add selected images to selected images container
+    imageDiv.addEventListener('click', (event) => {
+        selectModal.classList.remove('hidden');
+        imagePreview.attributes[1].value = event.target.attributes[1].value
+        
+        selectBtn.addEventListener('click', () => {
+            let image = imagePreview.attributes[1].value
+            selectModal.classList.add('hidden');
+
+            if(!selectedImagesSet.has(image) && selectedContainer.children.length < 3) {
+                selectedImagesSet.add(image); //to prevent from duplicating selected images sa selected section
+                document.getElementById('selectedImg-card').classList.remove('hidden');
+                
+                //remove selected images
+                
+                const selectedDiv = document.createElement('div');
+                selectedDiv.innerHTML = `<div id="remove" class="group-hover:block absolute z-10 top-2 right-2 bg-black  rounded-full p-2 hidden cursor-pointer">
+                                            <svg xmlns="http://www.w3.org/2000/svg"  width="14"  height="14"  viewBox="0 0 24 24"  fill="none"  stroke="white"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                        </div>
+                                        <div class="group-hover:block absolute z-0 bg-white opacity-20 h-full w-full hidden"></div>
+                                        <img src="${image}">`
+                selectedDiv.classList.add('group', 'rounded-lg', 'overflow-hidden', 'relative');
+                selectedContainer.appendChild(selectedDiv);
+    
+                selectedDiv.addEventListener('click', (event) => {
+                    if(event.target.id === 'remove' || event.target.parentElement.id === 'remove'){
+                        selectedContainer.removeChild(selectedDiv);
+                        selectedImagesSet.delete(image);
+                    }
+                    if(selectedContainer.children.length == 0){
+                        document.getElementById('selectedImg-card').classList.add('hidden');
+                    }
+                })
+            }
+        })
+    })
+}

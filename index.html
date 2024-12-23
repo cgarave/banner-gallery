@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en" class="bg-neutral-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.19/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-neutral-100 h-dvh w-screen flex flex-row overflow-hidden">
+<body class="h-fit w-screen flex flex-row">
     <div class="mx-14 my-20 w-full h-full flex flex-col gap-y-6"> <!--mx-56 & mx-14-->
         <div class="flex flex-row justify-between items-center">
             <h1 class="text-neutral-700 font-semibold text-4xl">Banner Gallery</h1>
@@ -141,9 +141,16 @@
         <div id="image-container" class="flex flex-wrap gap-4 overflow-scroll mb-2 h-3/6"></div>
         
     </div>
+    <!--Select Card-->
+    <div id="select-modal" class="w-[1000px] h-[600px] bg-neutral-300 rounded-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col p-5 z-10 hidden">
+        <div class="flex flex-row justify-end mb-5">
+            <button id="select-button" class="py-2 px-6 bg-[#FF9200] rounded-full text-white">Select</button>
+        </div>
+        <img id="image-card" src="" class="overflow-hidden">
+    </div>
 
     <!--Selected Images-->
-    <div id="selectedImg-card" class="w-[900px] bg-neutral-200 flex flex-col hidden">
+    <div id="selectedImg-card" class="h-dvh w-[900px] bg-neutral-200 flex flex-col hidden">
         <h1 class="text-neutral-700 border-b border-neutral-300 p-5 text-lg font-semibold">Selected images</h1>
         <div id="selectedImg-container" class="grid grid-cols-3 gap-4 p-4"></div>
     </div>
