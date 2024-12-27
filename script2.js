@@ -94,6 +94,7 @@ categoryBtn.forEach(element => {
     } else if (element.children[0].checked == false) {
         element.classList.remove('bg-[#FF9200]');
         element.classList.remove('border-[#FF9200]');
+        element.classList.remove('active');
         element.classList.replace('text-white', 'text-neutral-700');
     }
     //console.log(element.children[0].id);
@@ -114,11 +115,15 @@ const hashtags = new Set();
 
 containImages.forEach(image => {
     image.dataset.hashtags.split(',').forEach(tag => hashtags.add(tag.trim()));
-    console.log(hashtags);
-    
 })
 
+function filterImages(){
 
+    containImages.forEach(image => {
+        const imageTags = image.dataset.hashtags.split(',').map(tag => tag.trim());
+        
+    })
+}
 //category buttons
 const firstTimeDepositBtn = document.getElementById('first-time-deposit')
 firstTimeDepositBtn.addEventListener('click', () => {

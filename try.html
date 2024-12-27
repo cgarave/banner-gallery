@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-neutral-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banner Gallery</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-fit w-screen flex flex-row">
+    <div class="mx-14 my-20 w-full h-full flex flex-col gap-y-6"> <!--mx-56 & mx-14-->
+        <div class="flex flex-row justify-between items-center">
+            <h1 class="text-neutral-700 font-semibold text-4xl">Banner Gallery</h1>
+            <label class="input input-bordered flex items-center rounded-full gap-4 bg-neutral-200 w-96">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  class="h-4 w-4 opacity-70">
+                  <path
+                    fill-rule="evenodd"
+                    d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                    clip-rule="evenodd" />
+                </svg>
+                <input id="search" list="category" class="grow" placeholder="Search keyword" autocomplete="off"/>
+                <datalist id="category">
+                    <option value="First Time Deposit">
+                    <option value="SBK Soccer">
+                    <option value="Esports">
+                    <option value="Welcome Bonus">
+                    <option value="Deposit">
+                    <option value="SBK Basketball">
+                    <option value="Rebate">
+                    <option value="Freebet">
+                    <option value="SBK (Match Banners)">
+                    <option value="Parlay">
+                    <option value="SBK (Multisport)">
+                    <option value="Referral">
+                    <option value="SBK (Free Bet)">
+                  </datalist>
+              </label>
+        </div>
+        <div id="category-buttons" class="flex flex-wrap w-full gap-4">
+            
+            <!-- Category buttons will be injected here by JavaScript -->
+        </div>
+        <div id="image-container" class="flex flex-wrap gap-4 overflow-scroll mb-2 h-3/6">
+            <!-- Images will be injected here by JavaScript -->
+        </div>
+    </div>
+    <!--Select Card-->
+    <div id="select-modal" class="w-[1000px] h-[600px] bg-neutral-300 rounded-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col p-5 z-10 hidden">
+        <div class="flex flex-row justify-end mb-5">
+            <button id="select-button" class="py-2 px-6 bg-[#FF9200] rounded-full text-white">Select</button>
+        </div>
+        <img id="image-card" src="" class="overflow-hidden">
+    </div>
+
+    <!--Selected Images-->
+    <div id="selectedImg-card" class="h-dvh w-[900px] bg-neutral-200 flex flex-col hidden">
+        <h1 class="text-neutral-700 border-b border-neutral-300 p-5 text-lg font-semibold">Selected images</h1>
+        <div id="selectedImg-container" class="grid grid-cols-3 gap-4 p-4"></div>
+    </div>
+  <script>
+
+    //Add all categories here
+    const categories = ['First Time Deposit', 'SBK Soccer', 'Esports', 'Welcome Bonus', 'Deposit', 'SBK Basketball', 'Rebate', 'Freebet', 'SBK (Match Banners)', 'Parlay', 'SBK (Multisport)', 'Referral', 'SBK (Free Bet)'];
+
+    //Add all image source and its categories (can add multiple)
+    const imageData = [
+        //All categories should be in uppercase letters
+      { src: 'src/EVODECEXCPROMO-1224.png', categories: ['FIRST TIME DEPOSIT', 'FREEBET'] },
+      { src: 'src/EZUGIREBATEBONUS-1224.png', categories: ['REBATE'] },
+      { src: 'src/EVOSPINGIFTS-1224.png', categories: ['DEPOSIT'] },
+      { src: 'src/LOTTOKENO-1124.png', categories: ['FREEBET'] },
+      { src: 'src/ENDOFYEAR-1224.png', categories: ['SBK SOCCER'] },
+      { src: 'src/SWGGRDEC60-1224.png', categories: ['REBATE'] },
+      { src: 'src/ABUGP-1224.png', categories: ['SBK (MULTISPORT)'] },
+      { src: 'src/F1BANNER02-1224.png', categories: ['SBK (MULTISPORT)'] },
+    ];
+
+    // Generate the checkboxes and images dynamically
+    // I use map to create buttons
+    document.getElementById('category-buttons').innerHTML = `
+                                                            <label for="all-images" class="btn btn-outline rounded-full bg-[#FFA3012F] border-[#FFA301] text-neutral-700 font-normal hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200]">
+                                                                <input id="all-images" type="checkbox" class="hidden">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#FFA301"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  ><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /></svg> 
+                                                                All images
+                                                            </label>
+      ${categories.map(category => `<label class="categories btn btn-outline rounded-full text-neutral-700 font-normal w-fit hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200]">
+                                        <input type="checkbox" value="${category}" class="category hidden"> ${category}
+                                    </label>`).join('')}
+    `;
+    
+    // Generate the images
+    document.getElementById('image-container').innerHTML = `
+      ${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image w-64 h-64 cursor-pointer rounded-lg hover:border-2 hover:border-[#FF9200] relative">`).join('')}`;
+
+    // Checkbox listener
+    const allImagesBtn = document.getElementById('all-images')
+    const categoryButtons = document.querySelectorAll('.category');
+
+    categoryButtons.forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            if(checkbox.checked === true){
+                checkbox.parentElement.classList.add('bg-[#FF9200]');
+                checkbox.parentElement.classList.add('border-[#FF9200]');
+                checkbox.parentElement.classList.replace('text-neutral-700', 'text-white');
+                allImagesBtn.checked = false;
+            } else if(checkbox.checked === false){
+                checkbox.parentElement.classList.remove('bg-[#FF9200]');
+                checkbox.parentElement.classList.remove('border-[#FF9200]');
+                checkbox.parentElement.classList.replace('text-white', 'text-neutral-700');
+            }
+            
+            //Generated by chatgpt. Kailangan ko pa aralin to haha
+            // const selectedCategories = Array.from(document.querySelectorAll('.category:checked')).map(cb => cb.value.toUpperCase());
+            
+            // document.querySelectorAll('.image').forEach(image => {
+            //     const imageCategories = image.getAttribute('data-categories').split(',');
+            //     const shouldShow = selectedCategories.some(category => imageCategories.includes(category));
+
+            //     image.style.display = shouldShow ? 'block' : 'none';
+            // });
+
+            filterImages();
+
+            // If all categories are unchecked it will tick all images checkbox automatically
+            // if(selectedCategories.length === 0){
+            //     allImagesBtn.checked = true;
+            //     document.querySelectorAll('.image').forEach(image => {
+
+            //     //pwede pa to i rewrite to tailwind pero saka na hahaha
+            //     image.style.display = 'block';
+            // });
+            // }
+        });
+        //console.log(checkbox);
+        
+    });
+
+    // When 'all images' button is clicked, it will uncheck all category buttons
+    allImagesBtn.addEventListener('change', () => {
+        if(allImagesBtn.checked == true){
+            document.querySelectorAll('.image').forEach(image => {
+                image.style.display = 'block';
+            });
+            categoryButtons.forEach(checkbox => {
+                checkbox.checked = false;
+                checkbox.parentElement.classList.remove('bg-[#FF9200]');
+                checkbox.parentElement.classList.remove('border-[#FF9200]');
+                checkbox.parentElement.classList.replace('text-white', 'text-neutral-700');
+            })
+        }
+    })
+
+    // Search bar
+    let searchRes = Array.from(document.querySelectorAll('.category')).map(res => res.value) //To collect all 'value' of each checkbox passing it to res then converting it to array then pass to searchRes. Sana tama pagkakaintindi ko haha
+    const searchBar = document.getElementById('search');
+    searchBar.addEventListener('change', () => {
+        if(searchRes.includes(searchBar.value)){ //compare the entered value from search bar to searchRes. Once true it will -->
+            categoryButtons.forEach(checkbox => { //iterating to all checkboxes again to compare the search haha parang pwede ata paikliin to
+                if(searchBar.value == checkbox.value){
+                    checkbox.parentElement.classList.add('bg-[#FF9200]');
+                    checkbox.parentElement.classList.add('border-[#FF9200]');
+                    checkbox.parentElement.classList.replace('text-neutral-700', 'text-white');
+                    checkbox.checked = true;
+                    allImagesBtn.checked = false;
+                    filterImages();
+                }
+            })
+        }
+    })
+
+    // Image preview
+    document.querySelectorAll('.image').forEach(image => {
+        image.addEventListener('click', () => {
+            console.log(`Image clicked: ${image.src}`);
+        })
+    })
+
+    // Try lang
+    function filterImages(){
+        const selectedCategories = Array.from(document.querySelectorAll('.category:checked')).map(cb => cb.value.toUpperCase());
+            
+        document.querySelectorAll('.image').forEach(image => {
+          const imageCategories = image.getAttribute('data-categories').split(',');
+          const shouldShow = selectedCategories.some(category => imageCategories.includes(category));
+          image.style.display = shouldShow ? 'block' : 'none';
+        });
+
+        // If all categories are unchecked it will tick all images checkbox automatically
+        if(selectedCategories.length === 0){
+                allImagesBtn.checked = true;
+                document.querySelectorAll('.image').forEach(image => {
+
+                //pwede pa to i rewrite to tailwind pero saka na hahaha
+                image.style.display = 'block';
+            });
+            }
+    }
+
+  </script>
+</body>
+</html>
