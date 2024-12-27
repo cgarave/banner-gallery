@@ -34,7 +34,7 @@ categoryBtn.forEach(element => {
 //Might change this. Nalimutan ko na we have multiple categories for each banner, but same approach para malinis HTML natin. We can set categories and images here
 //We can also make this as 2d array rin. Ginawa ko lang sya object kasi ayon una kong naisip haha
 let imageClasses = {
-    images: [['PROMOTION','EVODECEXCPROMO-1224.png'],
+    images: [['PROMOTION LIVECASINO','EVODECEXCPROMO-1224.png'],
             ['LIVECASINO', 'EZUGIREBATEBONUS-1224.png'],
             ['SPINGIFTS','EVOSPINGIFTS-1224.png'],
             ['LOTTO', 'LOTTOKENO-1124.png'],
@@ -115,6 +115,7 @@ for(let i = 0; i <= imageClasses.images.length - 1; i++){
                 selectedImagesSet.add(image); //to prevent from duplicating selected images sa selected section
                 document.getElementById('selectedImg-card').classList.remove('hidden');
                 
+                
                 //remove selected images
                 
                 const selectedDiv = document.createElement('div');
@@ -139,3 +140,13 @@ for(let i = 0; i <= imageClasses.images.length - 1; i++){
         })
     })
 }
+
+//category buttons
+const liveCasino = document.getElementById('live-casino');
+liveCasino.addEventListener('click', () => {
+    if(liveCasino.checked == true){
+        for(i = 0; i <= imageContainer.children.length; i++){
+            imageContainer.children[i].classList.add('hidden');
+        }
+    }
+})
