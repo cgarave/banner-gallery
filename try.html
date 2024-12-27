@@ -173,11 +173,52 @@
     })
 
     // Image preview
+    const previewModal = document.getElementById('select-modal');
+    const selectBtn = document.getElementById('select-button');
+    let previewContainer = document.getElementById('image-card');
+    const selectedModal = document.getElementById('selectedImg-card');
+    let selectedContainer = document.getElementById('selectedImg-container');
+    let imageSet = new Set();
+
     document.querySelectorAll('.image').forEach(image => {
         image.addEventListener('click', () => {
-            console.log(`Image clicked: ${image.src}`);
+            previewModal.classList.toggle('hidden');
+
+            previewContainer.src = image.src //this fixed the duplicating image on selected container (not sure why hahaha pero need ko i-analyze siguro to)
+
+            // When image is selected
+            selectBtn.addEventListener('click', () => {
+                selectedModal.classList.remove('hidden');
+                previewModal.classList.add('hidden')
+                
+                if(!imageSet.has(previewContainer.src) && selectedContainer.children.length < 3){
+                    imageSet.add(previewContainer.src)
+                    const newDiv = document.createElement('div');
+                    newDiv.innerHTML = `<div id="remove" class="group-hover:block absolute z-10 top-2 right-2 bg-black  rounded-full p-2 hidden cursor-pointer">
+                                            <svg xmlns="http://www.w3.org/2000/svg"  width="14"  height="14"  viewBox="0 0 24 24"  fill="none"  stroke="white"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                        </div>
+                                        <div class="group-hover:block absolute z-0 bg-white opacity-20 h-full w-full hidden"></div>
+                                        <img src="${previewContainer.src}">`
+                    newDiv.classList.add('selected', 'group', 'rounded-lg', 'overflow-hidden', 'relative');
+                    selectedContainer.appendChild(newDiv)
+                }
+            })
         })
     })
+
+    //Selected section
+    selectedModal.addEventListener('click', (e) => {
+        let currentSrc = e.target.parentElement.children[2].src //Getting src of current selection
+        
+        if(e.target.id === 'remove' || e.target.parentElement.id === 'remove'){
+            selectedContainer.removeChild(e.target.parentElement);
+            imageSet.delete(currentSrc);
+        }
+        if(selectedContainer.children.length == 0){
+            selectedModal.classList.add('hidden');
+        }
+    })
+    
 
     // Try lang
     function filterImages(){
