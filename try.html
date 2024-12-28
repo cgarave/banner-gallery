@@ -7,8 +7,8 @@
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.19/dist/full.min.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="h-fit w-screen flex flex-row">
-    <div class="mx-14 my-20 w-full h-full flex flex-col gap-y-6"> <!--mx-56 & mx-14-->
+<body class="h-dvh w-screen flex flex-row overflow-hidden">
+    <div class="px-14 pt-10 w-full h-full flex flex-col gap-y-6"> <!--mx-56 & mx-14-->
         <div class="flex flex-row justify-between items-center">
             <h1 class="text-neutral-700 font-semibold text-4xl">Banner Gallery</h1>
             <label class="input input-bordered flex items-center rounded-full gap-4 bg-neutral-200 w-96">
@@ -44,16 +44,17 @@
             
             <!-- Category buttons will be injected here by JavaScript -->
         </div>
-        <div id="image-container" class="flex flex-wrap gap-4 overflow-scroll mb-2 h-3/6">
+        <div id="image-container" class="flex flex-wrap gap-4 overflow-scroll mb-2 h-full">
             <!-- Images will be injected here by JavaScript -->
         </div>
     </div>
     <!--Select Card-->
-    <div id="select-modal" class="w-[1000px] h-[600px] bg-neutral-300 rounded-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col p-5 z-10 hidden">
+    <div id="modal-overlay" class="w-full h-full bg-black opacity-70 absolute hidden z-20"></div>
+    <div id="select-modal" class="w-[720px] h-fit bg-neutral-100 rounded-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col p-5 z-30 hidden">
         <div class="flex flex-row justify-end mb-5">
             <button id="select-button" class="py-2 px-6 bg-[#FF9200] rounded-full text-white">Select</button>
         </div>
-        <img id="image-card" src="" class="overflow-hidden">
+        <img id="image-card" src="" class="overflow-hidden w-fit">
     </div>
 
     <!--Selected Images-->
@@ -69,14 +70,22 @@
     //Add all image source and its categories (can add multiple)
     const imageData = [
         //All categories should be in uppercase letters
-      { src: 'src/EVODECEXCPROMO-1224.png', categories: ['FIRST TIME DEPOSIT', 'FREEBET'] },
-      { src: 'src/EZUGIREBATEBONUS-1224.png', categories: ['REBATE'] },
-      { src: 'src/EVOSPINGIFTS-1224.png', categories: ['DEPOSIT'] },
-      { src: 'src/LOTTOKENO-1124.png', categories: ['FREEBET'] },
-      { src: 'src/ENDOFYEAR-1224.png', categories: ['SBK SOCCER'] },
-      { src: 'src/SWGGRDEC60-1224.png', categories: ['REBATE'] },
-      { src: 'src/ABUGP-1224.png', categories: ['SBK (MULTISPORT)'] },
-      { src: 'src/F1BANNER02-1224.png', categories: ['SBK (MULTISPORT)'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/promotion/2024-12-Dec/USDTDEPOSIT-1224/1280x720-USDTDEPOSIT-1224.webp', categories: ['FIRST TIME DEPOSIT', 'REBATE'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/promotion/2024-11-Nov/EZUGIREBATEBONUS-1124/1280x720-EZUGIREBATEBONUS-1124.webp', categories: ['REBATE'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/promotion/2024-11-Nov/EVOSPINGIFTS-1124/1280x720-EVOSPINGIFTS-1124.webp', categories: ['DEPOSIT'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-11-Nov/EZUGIGGRNOV-1124/1280x720-EZUGIGGRNOV-1124.webp', categories: ['FREEBET'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-11-Nov/LOTTOKENO-1124/1280x720-LOTTOKENO-1124.webp', categories: ['SBK SOCCER'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/promotion/2024-11-Nov/LOTTOCNYBIGWIN-1124/1280x720-LOTTOCNYBIGWIN-1124.webp', categories: ['REBATE'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-11-Nov/LOTTOLUCKY5-1124/1280x720-LOTTOLUCKY5-1124.webp', categories: ['SBK (MULTISPORT)'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-11-Nov/XJBALLRUSH-1124/1280x720-XJBALLRUSH-1124.webp', categories: ['SBK (MULTISPORT)'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-11-Nov/KYCHESSLANDLORD-1124/1280x720-KYCHESSLANDLORD-1124.webp', categories: ['SBK (MULTISPORT)'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-11-Nov/KYCHESSGUANDAN-1124/1280x720-KYCHESSGUANDAN-1124.webp', categories: ['SBK (MULTISPORT)'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-11-Nov/KYCHESSBULLBULL-1124/1280x720-KYCHESSBULLBULL-1124.webp', categories: ['SBK (MULTISPORT)'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-10-Oct/ONCASINO-1024/1280x720-ONCASINO-1024.webp', categories: ['SBK (MULTISPORT)'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-10-Oct/NBAOPENINGWEEK-1024/1280x720-NBAOPENINGWEEK-1024.webp', categories: ['SBK (MULTISPORT)'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/promotion/2024-10-Oct/SBKTHBIGWIN-1024/1280x720-SBKTHBIGWIN-1024.webp', categories: ['SBK (MULTISPORT)'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-10-Oct/INFINITEFUNFUN21-1024/1280x720-INFINITEFUNFUN21-1024.webp', categories: ['SBK (MULTISPORT)'] },
+      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-10-Oct/EZBACCARAT-1024/1280x720-EZBACCARAT-1024.webp', categories: ['SBK (MULTISPORT)'] },
     ];
 
     // Generate the checkboxes and images dynamically
@@ -87,14 +96,14 @@
                                                                 <svg xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#FFA301"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  ><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /></svg> 
                                                                 All images
                                                             </label>
-      ${categories.map(category => `<label class="categories btn btn-outline rounded-full text-neutral-700 font-normal w-fit hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200]">
+      ${categories.map(category => `<label class="categories btn btn-outline rounded-full text-neutral-700 font-normal w-fit hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200] cursor-pointer">
                                         <input type="checkbox" value="${category}" class="category hidden"> ${category}
                                     </label>`).join('')}
     `;
     
     // Generate the images
     document.getElementById('image-container').innerHTML = `
-      ${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image w-64 h-64 cursor-pointer rounded-lg hover:border-2 hover:border-[#FF9200] relative">`).join('')}`;
+      ${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image w-64 h-64 cursor-pointer rounded-lg hover:border-2 hover:border-[#FF9200] relative object-cover">`).join('')}`;
 
     // Checkbox listener
     const allImagesBtn = document.getElementById('all-images')
@@ -173,6 +182,7 @@
     })
 
     // Image preview
+    const modalOverlay = document.getElementById('modal-overlay');
     const previewModal = document.getElementById('select-modal');
     const selectBtn = document.getElementById('select-button');
     let previewContainer = document.getElementById('image-card');
@@ -182,12 +192,14 @@
 
     document.querySelectorAll('.image').forEach(image => {
         image.addEventListener('click', () => {
+            modalOverlay.classList.remove('hidden');
             previewModal.classList.toggle('hidden');
 
             previewContainer.src = image.src //this fixed the duplicating image on selected container (not sure why hahaha pero need ko i-analyze siguro to)
 
             // When image is selected
             selectBtn.addEventListener('click', () => {
+                modalOverlay.classList.add('hidden');
                 selectedModal.classList.remove('hidden');
                 previewModal.classList.add('hidden')
                 
@@ -202,6 +214,11 @@
                     newDiv.classList.add('selected', 'group', 'rounded-lg', 'overflow-hidden', 'relative');
                     selectedContainer.appendChild(newDiv)
                 }
+            })
+
+            modalOverlay.addEventListener('click', () => {
+                modalOverlay.classList.add('hidden');
+                previewModal.classList.add('hidden')
             })
         })
     })
