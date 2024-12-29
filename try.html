@@ -62,6 +62,8 @@
         <h1 class="text-neutral-700 border-b border-neutral-300 p-5 text-lg font-semibold">Selected images</h1>
         <div id="selectedImg-container" class="grid grid-cols-3 gap-4 p-4"></div>
     </div>
+
+    <!--Script starts here-->
   <script>
 
     //Add all categories here
@@ -103,7 +105,7 @@
     
     // Generate the images
     document.getElementById('image-container').innerHTML = `
-      ${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image w-64 h-64 cursor-pointer rounded-lg hover:border-2 hover:border-[#FF9200] relative object-cover">`).join('')}`;
+      ${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image w-fit h-56 cursor-pointer rounded-lg hover:border-2 hover:border-[#FF9200] relative object-cover">`).join('')}`;
 
     // Checkbox listener
     const allImagesBtn = document.getElementById('all-images')
@@ -116,6 +118,8 @@
                 checkbox.parentElement.classList.add('border-[#FF9200]');
                 checkbox.parentElement.classList.replace('text-neutral-700', 'text-white');
                 allImagesBtn.checked = false;
+                //all images button
+                allImagesBtn.parentElement.classList.remove('bg-[#FFA3012F]');
             } else if(checkbox.checked === false){
                 checkbox.parentElement.classList.remove('bg-[#FF9200]');
                 checkbox.parentElement.classList.remove('border-[#FF9200]');
@@ -153,6 +157,7 @@
         if(allImagesBtn.checked == true){
             document.querySelectorAll('.image').forEach(image => {
                 image.style.display = 'block';
+                allImagesBtn.parentElement.classList.add('bg-[#FFA3012F]');
             });
             categoryButtons.forEach(checkbox => {
                 checkbox.checked = false;
@@ -202,7 +207,7 @@
                 modalOverlay.classList.add('hidden');
                 selectedModal.classList.remove('hidden');
                 previewModal.classList.add('hidden')
-                
+                document.querySelectorAll('.image').forEach(image => image.classList.replace('h-56', 'h-[45%]')); //when the selected container contains images, the size of the image automatically fit the container
                 if(!imageSet.has(previewContainer.src) && selectedContainer.children.length < 3){
                     imageSet.add(previewContainer.src)
                     const newDiv = document.createElement('div');
@@ -233,6 +238,7 @@
         }
         if(selectedContainer.children.length == 0){
             selectedModal.classList.add('hidden');
+            document.querySelectorAll('.image').forEach(image => image.classList.replace('h-[45%]', 'h-56')); //when the selected container contains images, the size of the image automatically fit the container
         }
     })
     
@@ -250,6 +256,8 @@
         // If all categories are unchecked it will tick all images checkbox automatically
         if(selectedCategories.length === 0){
                 allImagesBtn.checked = true;
+                allImagesBtn.parentElement.classList.add('bg-[#FFA3012F]');
+
                 document.querySelectorAll('.image').forEach(image => {
 
                 //pwede pa to i rewrite to tailwind pero saka na hahaha
