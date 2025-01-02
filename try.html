@@ -52,7 +52,7 @@
     <div id="modal-overlay" class="w-full h-full bg-black opacity-70 absolute hidden z-20"></div>
     <div id="select-modal" class="w-[720px] h-fit bg-neutral-100 rounded-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col p-5 z-30 hidden">
         <div class="flex flex-row justify-end mb-5">
-            <button id="select-button" class="py-2 px-6 bg-[#FF9200] rounded-full text-white">Select</button>
+            <button id="select-button" class="py-2 px-6 bg-[#FFA3012F] border border-[#FFA301] hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200] rounded-full font-normal text-black">Select</button>
         </div>
         <img id="image-card" src="" class="overflow-hidden w-fit">
     </div>
@@ -63,7 +63,23 @@
         <div id="selectedImg-container" class="grid grid-cols-3 gap-4 p-4"></div>
     </div>
 
-    <!--Script starts here-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--Script starts here-->
   <script>
 
     //Add all categories here
@@ -105,7 +121,10 @@
     
     // Generate the images
     document.getElementById('image-container').innerHTML = `
-      ${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image w-fit h-56 cursor-pointer rounded-lg hover:border-2 hover:border-[#FF9200] relative object-cover">`).join('')}`;
+      ${imageData.map(image => `<div class="w-fit relative flex justify-center flex-1 w-auto max-w-[28rem] h-56">
+                                    <div class="absolute bottom-5 py-2 px-4 bg-[#FF9200] rounded-full text-white hidden">Selected</div>
+                                    <img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-auto max-w-[28rem] h-56 cursor-pointer rounded-lg hover:border-2 hover:border-[#FF9200] object-cover">
+                                </div>`).join('')}`;
 
     // Checkbox listener
     const allImagesBtn = document.getElementById('all-images')
@@ -195,6 +214,7 @@
     let selectedContainer = document.getElementById('selectedImg-container');
     let imageSet = new Set();
 
+
     document.querySelectorAll('.image').forEach(image => {
         image.addEventListener('click', () => {
             modalOverlay.classList.remove('hidden');
@@ -207,12 +227,14 @@
                 modalOverlay.classList.add('hidden');
                 selectedModal.classList.remove('hidden');
                 previewModal.classList.add('hidden')
-                document.querySelectorAll('.image').forEach(image => image.classList.replace('h-56', 'h-[45%]')); //when the selected container contains images, the size of the image automatically fit the container
+                //document.querySelectorAll('.image').forEach(image => image.classList.remove('max-w-[28rem]')); //when the selected container contains images, the size of the image automatically fit the container
                 if(!imageSet.has(previewContainer.src) && selectedContainer.children.length < 3){
                     imageSet.add(previewContainer.src)
                     const newDiv = document.createElement('div');
                     newDiv.innerHTML = `<div id="remove" class="group-hover:block absolute z-10 top-2 right-2 bg-black  rounded-full p-2 hidden cursor-pointer">
-                                            <svg xmlns="http://www.w3.org/2000/svg"  width="14"  height="14"  viewBox="0 0 24 24"  fill="none"  stroke="white"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                            <span class="pointer-events-none">
+                                                <svg xmlns="http://www.w3.org/2000/svg"  width="14"  height="14"  viewBox="0 0 24 24"  fill="none"  stroke="white"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                            </span>
                                         </div>
                                         <div class="group-hover:block absolute z-0 bg-white opacity-20 h-full w-full hidden"></div>
                                         <img src="${previewContainer.src}">`
@@ -221,6 +243,7 @@
                 }
             })
 
+            //will hide modal after selecting an image
             modalOverlay.addEventListener('click', () => {
                 modalOverlay.classList.add('hidden');
                 previewModal.classList.add('hidden')
@@ -228,17 +251,17 @@
         })
     })
 
+    
     //Selected section
     selectedModal.addEventListener('click', (e) => {
         let currentSrc = e.target.parentElement.children[2].src //Getting src of current selection
-        
-        if(e.target.id === 'remove' || e.target.parentElement.id === 'remove'){
+        console.log(e.target.parentElement);
+        if(e.target.id === 'remove'){
             selectedContainer.removeChild(e.target.parentElement);
             imageSet.delete(currentSrc);
         }
         if(selectedContainer.children.length == 0){
             selectedModal.classList.add('hidden');
-            document.querySelectorAll('.image').forEach(image => image.classList.replace('h-[45%]', 'h-56')); //when the selected container contains images, the size of the image automatically fit the container
         }
     })
     
