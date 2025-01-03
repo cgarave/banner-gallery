@@ -44,7 +44,7 @@
             
             <!-- Category buttons will be injected here by JavaScript -->
         </div>
-        <div id="image-container" class="flex flex-wrap gap-4 overflow-scroll mb-2 h-full">
+        <div id="image-container" class="flex flex-wrap gap-4 overflow-scroll mb-2 h-fit">
             <!-- Images will be injected here by JavaScript -->
         </div>
     </div>
@@ -121,10 +121,7 @@
     
     // Generate the images
     document.getElementById('image-container').innerHTML = `
-      ${imageData.map(image => `<div class="w-fit relative flex justify-center flex-1 w-auto max-w-[28rem] h-56">
-                                    <div class="absolute bottom-5 py-2 px-4 bg-[#FF9200] rounded-full text-white hidden">Selected</div>
-                                    <img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-auto max-w-[28rem] h-56 cursor-pointer rounded-lg hover:border-2 hover:border-[#FF9200] object-cover">
-                                </div>`).join('')}`;
+      ${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-fit max-w-[27rem] h-56 cursor-pointer rounded-lg hover:border-2 hover:border-[#FF9200] object-cover">`).join('')}`;
 
     // Checkbox listener
     const allImagesBtn = document.getElementById('all-images')
