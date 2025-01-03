@@ -40,13 +40,13 @@
 </head>
 <body>
     <div id="elements">
-        <div class="element" style="background-color: red;">
+        <div class="element" data-id="1">
             <span class="selected-span">Selected</span>
         </div>
-        <div class="element" style="background-color: yellow;">
+        <div class="element" data-id="2">
             <span class="selected-span">Selected</span>
         </div>
-        <div class="element" style="background-color: blue;">
+        <div class="element" data-id="3">
             <span class="selected-span">Selected</span>
         </div>
     </div>
@@ -58,14 +58,34 @@
         const elements = document.querySelectorAll('.element');
         const container = document.getElementById('container');
 
+        // Function to handle removing the cloned element when clicked
+        const handleCloneClick = (clonedElement, originalElement) => {
+            clonedElement.remove();
+            originalElement.classList.remove('selected');
+        };
+
         elements.forEach(element => {
             element.addEventListener('click', () => {
-                if (!element.classList.contains('selected')) {
-                    element.classList.add('selected');
-                    container.appendChild(element);
+                // Toggle the "selected" state of the element
+                element.classList.toggle('selected');
+
+                // Check if the element is selected
+                if (element.classList.contains('selected')) {
+                    // Clone the element and add it to the second container
+                    const clonedElement = element.cloneNode(true);
+                    clonedElement.classList.remove('selected'); // Remove the selected state in the clone
+                    clonedElement.querySelector('.selected-span').style.display = 'none'; // Hide the span
+                    container.appendChild(clonedElement);
+
+                    // Add click event to remove the cloned element
+                    clonedElement.addEventListener('click', () => handleCloneClick(clonedElement, element));
                 } else {
-                    element.classList.remove('selected');
-                    document.getElementById('elements').appendChild(element);
+                    // Remove the cloned element from the container
+                    const id = element.getAttribute('data-id');
+                    const clonedElement = container.querySelector(`.element[data-id="${id}"]`);
+                    if (clonedElement) {
+                        clonedElement.remove();
+                    }
                 }
             });
         });
