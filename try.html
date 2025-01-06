@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Banner Gallery</title>
+  <title>Banner Library</title>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.19/dist/full.min.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -17,7 +17,7 @@
 <body class="h-dvh w-screen flex flex-row overflow-hidden">
     <div class="px-14 pt-10 w-full h-full flex flex-col gap-y-6"> <!--mx-56 & mx-14-->
         <div class="flex flex-row justify-between items-center">
-            <h1 class="text-neutral-700 font-semibold text-4xl">Banner Gallery</h1>
+            <h1 class="text-neutral-700 font-semibold text-4xl">Banner <span class="text-[#FF9200]">Library</span></h1>
             <label class="input input-bordered flex items-center rounded-full gap-4 bg-neutral-200 w-96">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +29,7 @@
                     d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
                     clip-rule="evenodd" />
                 </svg>
-                <input id="search" list="category" class="grow" placeholder="Search keyword" autocomplete="off"/>
+                <input id="search" list="category" class="grow text-black" placeholder="Search keyword" autocomplete="off"/>
                 <datalist id="category">
                     <option value="First Time Deposit">
                     <option value="SBK Soccer">
@@ -123,12 +123,11 @@
                                                             </label>
       ${categories.map(category => `<label class="categories btn btn-outline rounded-full text-neutral-700 font-normal w-fit hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200] cursor-pointer">
                                         <input type="checkbox" value="${category}" class="category hidden"> ${category}
-                                    </label>`).join('')}
-    `;
+                                    </label>`).join('')}`;
     
     // Generate the images
     document.getElementById('image-container').innerHTML = `
-      ${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-fit max-w-[27rem] h-56 cursor-pointer rounded-lg hover:border-2 hover:border-[#FF9200] object-cover">`).join('')}`;
+      ${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-fit max-w-[27rem] h-56 cursor-pointer rounded-lg hover:scale-95 object-cover transition duration-300">`).join('')}`;
 
     // Checkbox listener
     const allImagesBtn = document.getElementById('all-images')
@@ -148,8 +147,6 @@
             }
             filterImages();
         });
-        //console.log(checkbox);
-        
     });
 
     // When 'all images' button is clicked, it will uncheck all category buttons
@@ -208,6 +205,9 @@
                 selectedModal.classList.remove('hidden');
                 previewModal.classList.add('hidden')
                 document.querySelectorAll('.image').forEach(image => image.classList.replace('max-w-[27rem]', 'max-w-[570px]')); //when the selected container contains images, the size of the image automatically fit the container
+                
+                image.classList.add('border-2', 'border-blue-600'); //for selected images
+
                 if(!imageSet.has(previewContainer.src) && selectedContainer.children.length < 3){
                     imageSet.add(previewContainer.src)
                     const newDiv = document.createElement('div');
@@ -223,6 +223,13 @@
                 }
             })
 
+            //disabling the select button when the selected images reached 3
+            if(selectedContainer.children.length === 3){
+                selectBtn.disabled = true;
+            } else if (selectedContainer.children.length < 3){
+                selectBtn.disabled = false;
+            }
+            
             //will hide modal after selecting an image
             modalOverlay.addEventListener('click', () => {
                 modalOverlay.classList.add('hidden');
@@ -235,7 +242,6 @@
     //Selected section
     selectedModal.addEventListener('click', (e) => {
         let currentSrc = e.target.parentElement.children[2].src //Getting src of current selection
-        console.log(e.target.parentElement);
         if(e.target.id === 'remove'){
             selectedContainer.removeChild(e.target.parentElement);
             imageSet.delete(currentSrc);
@@ -267,7 +273,7 @@
                 //pwede pa to i rewrite to tailwind pero saka na hahaha
                 image.style.display = 'block';
             });
-            }
+        }
     }
 
 
