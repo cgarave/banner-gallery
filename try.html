@@ -6,6 +6,13 @@
   <title>Banner Gallery</title>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.19/dist/full.min.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    #category-input::-webkit-calendar-picker-indicator {
+        display: none;
+        -webkit-appearance: none;
+    }
+  </style>
 </head>
 <body class="h-dvh w-screen flex flex-row overflow-hidden">
     <div class="px-14 pt-10 w-full h-full flex flex-col gap-y-6"> <!--mx-56 & mx-14-->
@@ -121,7 +128,7 @@
     
     // Generate the images
     document.getElementById('image-container').innerHTML = `
-      ${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image w-fit max-w-[27rem] h-56 cursor-pointer rounded-lg hover:border-2 hover:border-[#FF9200] object-cover">`).join('')}`;
+      ${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-fit max-w-[27rem] h-56 cursor-pointer rounded-lg hover:border-2 hover:border-[#FF9200] object-cover">`).join('')}`;
 
     // Checkbox listener
     const allImagesBtn = document.getElementById('all-images')
@@ -200,7 +207,7 @@
                 modalOverlay.classList.add('hidden');
                 selectedModal.classList.remove('hidden');
                 previewModal.classList.add('hidden')
-                //document.querySelectorAll('.image').forEach(image => image.classList.replace('max-w-[27rem]', 'w-[570px]')); //when the selected container contains images, the size of the image automatically fit the container
+                document.querySelectorAll('.image').forEach(image => image.classList.replace('max-w-[27rem]', 'max-w-[570px]')); //when the selected container contains images, the size of the image automatically fit the container
                 if(!imageSet.has(previewContainer.src) && selectedContainer.children.length < 3){
                     imageSet.add(previewContainer.src)
                     const newDiv = document.createElement('div');
@@ -235,6 +242,7 @@
         }
         if(selectedContainer.children.length == 0){
             selectedModal.classList.add('hidden');
+            document.querySelectorAll('.image').forEach(image => image.classList.replace('max-w-[570px]', 'max-w-[27rem]'));
         }
     })
     
@@ -261,6 +269,7 @@
             });
             }
     }
+
 
   </script>
 </body>
