@@ -31,20 +31,22 @@
                 </svg>
                 <input id="search" list="category" class="grow text-black" placeholder="Search keyword" autocomplete="off"/>
                 <datalist id="category">
-                    <option value="First Time Deposit">
-                    <option value="SBK Soccer">
-                    <option value="Esports">
-                    <option value="Welcome Bonus">
-                    <option value="Deposit">
-                    <option value="SBK Basketball">
-                    <option value="Rebate">
-                    <option value="Freebet">
-                    <option value="SBK (Match Banners)">
-                    <option value="Parlay">
-                    <option value="SBK (Multisport)">
-                    <option value="Referral">
-                    <option value="SBK (Free Bet)">
-                  </datalist>
+                    <option value="Basketball">
+                        <option value="Bonus">
+                        <option value="Counter-Strike">
+                        <option value="Deposit">
+                        <option value="DOTA 2">
+                        <option value="Esports">
+                        <option value="First Time Deposit">
+                        <option value="Football">
+                        <option value="Free Bet">
+                        <option value="Multiple Sports">
+                        <option value="Parlay">
+                        <option value="Rebate">
+                        <option value="Referral">
+                        <option value="Sports">
+                        <option value="Welcome Bonus">
+                    </datalist>
               </label>
         </div>
         <div id="category-buttons" class="flex flex-wrap w-full gap-4">
@@ -90,31 +92,16 @@
   <script>
 
     //Add all categories here
-    const categories = ['First Time Deposit', 'SBK Soccer', 'Esports', 'Welcome Bonus', 'Deposit', 'SBK Basketball', 'Rebate', 'Freebet', 'SBK (Match Banners)', 'Parlay', 'SBK (Multisport)', 'Referral', 'SBK (Free Bet)'];
+    const categories = ['Basketball', 'Bonus', 'Counter-Strike', 'Deposit', 'DOTA 2', 'Esports', 'First Time Deposit', 'Football', 'Free Bet', 'Multiple Sports', 'Parlay', 'Rebate', 'Referral', 'Sports', 'Welcome Bonus' ];
 
     //Add all image source and its categories (can add multiple)
     const imageData = [
         //All categories should be in uppercase letters
       { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/promotion/2024-12-Dec/USDTDEPOSIT-1224/1280x720-USDTDEPOSIT-1224.webp', categories: ['FIRST TIME DEPOSIT', 'REBATE'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/promotion/2024-11-Nov/EZUGIREBATEBONUS-1124/1280x720-EZUGIREBATEBONUS-1124.webp', categories: ['REBATE'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/promotion/2024-11-Nov/EVOSPINGIFTS-1124/1280x720-EVOSPINGIFTS-1124.webp', categories: ['DEPOSIT'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-11-Nov/EZUGIGGRNOV-1124/1280x720-EZUGIGGRNOV-1124.webp', categories: ['FREEBET'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-11-Nov/LOTTOKENO-1124/1280x720-LOTTOKENO-1124.webp', categories: ['SBK SOCCER'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/promotion/2024-11-Nov/LOTTOCNYBIGWIN-1124/1280x720-LOTTOCNYBIGWIN-1124.webp', categories: ['REBATE'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-11-Nov/LOTTOLUCKY5-1124/1280x720-LOTTOLUCKY5-1124.webp', categories: ['SBK (MULTISPORT)'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-11-Nov/XJBALLRUSH-1124/1280x720-XJBALLRUSH-1124.webp', categories: ['SBK (MULTISPORT)'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-11-Nov/KYCHESSLANDLORD-1124/1280x720-KYCHESSLANDLORD-1124.webp', categories: ['SBK (MULTISPORT)'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-11-Nov/KYCHESSGUANDAN-1124/1280x720-KYCHESSGUANDAN-1124.webp', categories: ['SBK (MULTISPORT)'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-11-Nov/KYCHESSBULLBULL-1124/1280x720-KYCHESSBULLBULL-1124.webp', categories: ['SBK (MULTISPORT)'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-10-Oct/ONCASINO-1024/1280x720-ONCASINO-1024.webp', categories: ['SBK (MULTISPORT)'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-10-Oct/NBAOPENINGWEEK-1024/1280x720-NBAOPENINGWEEK-1024.webp', categories: ['SBK (MULTISPORT)'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/promotion/2024-10-Oct/SBKTHBIGWIN-1024/1280x720-SBKTHBIGWIN-1024.webp', categories: ['SBK (MULTISPORT)'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-10-Oct/INFINITEFUNFUN21-1024/1280x720-INFINITEFUNFUN21-1024.webp', categories: ['SBK (MULTISPORT)'] },
-      { src: 'https://doc-cdn.stcb18x1.com/star4-content/images/banners/generic/2024-10-Oct/EZBACCARAT-1024/1280x720-EZBACCARAT-1024.webp', categories: ['SBK (MULTISPORT)'] },
     ];
 
     // Generate the checkboxes and images dynamically
-    // I use map to create buttons
+    // I used map to create buttons
     document.getElementById('category-buttons').innerHTML = `
                                                             <label for="all-images" class="btn btn-outline rounded-full bg-[#FFA3012F] border-[#FFA301] text-neutral-700 font-normal hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200]">
                                                                 <input id="all-images" type="checkbox" class="hidden">
@@ -127,6 +114,10 @@
     
     // Generate the images
     document.getElementById('image-container').innerHTML = `
+            <div id="no-result" class="flex flex-col gap-y-2 absolute text-black top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center hidden">
+                <h1>No results found</h1>
+                <p>Try different keywords or remove search filters.</p>
+            </div>
       ${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-fit max-w-[27rem] h-56 cursor-pointer rounded-lg hover:scale-95 object-cover transition duration-300">`).join('')}`;
 
     // Checkbox listener
@@ -206,7 +197,7 @@
                 previewModal.classList.add('hidden')
                 document.querySelectorAll('.image').forEach(image => image.classList.replace('max-w-[27rem]', 'max-w-[570px]')); //when the selected container contains images, the size of the image automatically fit the container
                 
-                image.classList.add('border-2', 'border-blue-600'); //for selected images
+                //image.classList.add('border-2', 'border-blue-600'); //for selected images
 
                 if(!imageSet.has(previewContainer.src) && selectedContainer.children.length < 3){
                     imageSet.add(previewContainer.src)
@@ -224,11 +215,11 @@
             })
 
             //disabling the select button when the selected images reached 3
-            if(selectedContainer.children.length === 3){
-                selectBtn.disabled = true;
-            } else if (selectedContainer.children.length < 3){
-                selectBtn.disabled = false;
-            }
+            // if(selectedContainer.children.length === 3){
+            //     selectBtn.disabled = true;
+            // } else if (selectedContainer.children.length < 3){
+            //     selectBtn.disabled = false;
+            // }
             
             //will hide modal after selecting an image
             modalOverlay.addEventListener('click', () => {
@@ -274,6 +265,14 @@
                 image.style.display = 'block';
             });
         }
+
+        // Check if all images are set to display = 'none'
+        // const allHidden = Array.from(document.querySelectorAll('.image')).every(image => image.style.display === 'none');
+        // if (allHidden) {
+        //   console.log('All images are hidden.');
+        // } else {
+        //   console.log('Some images are visible.');
+        // }
     }
 
 
