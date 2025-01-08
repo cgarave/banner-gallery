@@ -30,9 +30,9 @@
                     clip-rule="evenodd" />
                 </svg>
                 <input id="search" list="category" class="grow text-black" placeholder="Search keyword" autocomplete="off"/>
-                <datalist id="category">
-                    <option value="Basketball">
+                    <datalist id="category">
                         <option value="Action">
+                        <option value="Basketball">
                         <option value="Bonus">
                         <option value="Championship">
                         <option value="Counter-Strike">
@@ -259,12 +259,12 @@
     })
 
     // Search bar
-    let searchRes = Array.from(document.querySelectorAll('.category')).map(res => res.value) //To collect all 'value' of each checkbox passing it to res then converting it to array then pass to searchRes. Sana tama pagkakaintindi ko haha
+    let searchRes = Array.from(document.querySelectorAll('.category')).map(res => res.value.toUpperCase()) //To collect all 'value' of each checkbox passing it to res then converting it to array then pass to searchRes. Sana tama pagkakaintindi ko haha
     const searchBar = document.getElementById('search');
     searchBar.addEventListener('change', () => {
-        if(searchRes.includes(searchBar.value)){ //compare the entered value from search bar to searchRes. Once true it will -->
+        if(searchRes.includes(searchBar.value.toUpperCase())){ //compare the entered value from search bar to searchRes. Once true it will -->
             categoryButtons.forEach(checkbox => { //iterating to all checkboxes again to compare the search haha parang pwede ata paikliin to
-                if(searchBar.value == checkbox.value){
+                if(searchBar.value.toUpperCase() == checkbox.value.toUpperCase()){
                     checkbox.parentElement.classList.add('bg-[#FF9200]', 'border-[#FF9200]');
                     checkbox.parentElement.classList.replace('text-neutral-700', 'text-white');
                     checkbox.checked = true;
