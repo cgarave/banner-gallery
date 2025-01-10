@@ -36,6 +36,7 @@
                         <option value="Bonus">
                         <option value="Championship">
                         <option value="Counter-Strike">
+                        <option value="Deposit">
                         <option value="DOTA 2">
                         <option value="Esports">
                         <option value="Face-off">
@@ -50,6 +51,7 @@
                         <option value="Referral">
                         <option value="Sports">
                         <option value="Trophy">
+                        <option value="Welcome Bonus">
                     </datalist>
               </label>
         </div>
@@ -96,7 +98,7 @@
   <script>
 
     //Add all categories here
-    const categories = ['Action', 'Basketball', 'Championship', 'Counter-Strike', 'DOTA 2', 'Esports', 'Face-off', 'First Time Deposit', 'Football', 'Free Bet', 'League of Legends', 'Match Banner', 'Multiple Sports', 'Parlay', 'Rebate', 'Referral', 'Sports', 'Trophy',];
+    const categories = ['Action', 'Basketball', 'Championship', 'Counter-Strike', 'Deposit', 'DOTA 2', 'Esports', 'Face-off', 'First Time Deposit', 'Football', 'Free Bet', 'League of Legends', 'Match Banner', 'Multiple Sports', 'Parlay', 'Rebate', 'Referral', 'Sports', 'Trophy', 'Welcome Bonus'];
 
     //Add all image source and its categories (can add multiple)
     const imageData = [
@@ -168,6 +170,15 @@
         { src: 'https://188betpromo.com/sandbox/banners/MULTISPORT-3.jpg', categories: ['MULTIPLE SPORTS', ] },
         { src: 'https://188betpromo.com/sandbox/banners/MULTISPORT-4.jpg', categories: ['MULTIPLE SPORTS', ] },
         { src: 'https://188betpromo.com/sandbox/banners/MULTISPORT-5.jpg', categories: ['MULTIPLE SPORTS', ] },
+        //Deposit
+        { src: 'https://188betpromo.com/sandbox/banners/DEPOSIT-1.jpg', categories: ['DEPOSIT', ] },
+        { src: 'https://188betpromo.com/sandbox/banners/DEPOSIT-2.jpg', categories: ['DEPOSIT', ] },
+        { src: 'https://188betpromo.com/sandbox/banners/DEPOSIT-3.jpg', categories: ['DEPOSIT', ] },
+        //WELCOME BONUS
+        { src: 'https://188betpromo.com/sandbox/banners/WELCOMEBONUS-1.jpg', categories: ['WELCOME BONUS', ] },
+        { src: 'https://188betpromo.com/sandbox/banners/WELCOMEBONUS-2.jpg', categories: ['WELCOME BONUS', ] },
+        { src: 'https://188betpromo.com/sandbox/banners/WELCOMEBONUS-3.jpg', categories: ['WELCOME BONUS', ] },
+
     ];
 
     // Generate the checkboxes and images dynamically
@@ -182,8 +193,7 @@
                                         <input type="checkbox" value="${category}" class="category hidden"> ${category}
                                     </label>`).join('')}`;
     
-    // Generate the images
-    //document.getElementById('image-container').innerHTML = `${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-fit max-w-[27rem] h-56 cursor-pointer rounded-lg hover:scale-95 object-cover transition duration-300">`).join('')}`;
+    
 
     // Fisher-Yates shuffle algorithm to shuffle the imageData array
     function shuffleArray(array) {
@@ -194,10 +204,19 @@
     }
 
     // Shuffle the imageData array
-    //shuffleArray(imageData);
+    shuffleArray(imageData);
 
-    // Generate the HTML for images in random order
+    //Generate the images
     document.getElementById('image-container').innerHTML = `${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-fit max-w-[27rem] h-56 cursor-pointer rounded-lg hover:scale-95 object-cover transition duration-300">`).join('')}`;
+
+    // Generate the HTML for images in random order 
+    //requested feature by kleine for next update
+    // document.getElementById('image-container').innerHTML = `${imageData.map(image => `  <div data-categories="${image.categories.join(',')}" class="image relative flex justify-center rounded-lg overflow-hidden max-w-[27rem] cursor-pointer hover:scale-95 transition duration-300 object-cover">
+    //                                                                                         <label for="${image.src}" class="absolute bottom-5 p-2 bg-[#FF9200] text-white rounded-full hidden">
+    //                                                                                             <input type="checkbox" id="${image.src}" class="">Selected
+    //                                                                                         </label>
+    //                                                                                         <img src="${image.src}">
+    //                                                                                     </div>`).join('')}`;
 
     // Checkbox listener
     const allImagesBtn = document.getElementById('all-images')
@@ -267,6 +286,7 @@
             modalOverlay.classList.remove('hidden');
             previewModal.classList.toggle('hidden');
 
+            //previewContainer.src = image.children[1].src //requested feature by kleine for next update
             previewContainer.src = image.src //this fixed the duplicating image on selected container (not sure why hahaha pero need ko i-analyze siguro to)
 
             // When image is selected
@@ -275,8 +295,6 @@
                 selectedModal.classList.remove('hidden');
                 previewModal.classList.add('hidden')
                 document.querySelectorAll('.image').forEach(image => image.classList.replace('max-w-[27rem]', 'max-w-[570px]')); //when the selected container contains images, the size of the image automatically fit the container
-                
-                //image.classList.add('border-2', 'border-blue-600'); //for selected images
 
                 if(!imageSet.has(previewContainer.src) && selectedContainer.children.length < 3){
                     imageSet.add(previewContainer.src)
@@ -330,7 +348,7 @@
         document.querySelectorAll('.image').forEach(image => {
           const imageCategories = image.getAttribute('data-categories').split(',');
           const shouldShow = selectedCategories.some(category => imageCategories.includes(category));
-          image.style.display = shouldShow ? 'block' : 'none';
+          image.style.display = shouldShow ? 'flex' : 'none';
         });
 
         // If all categories are unchecked it will tick all images checkbox automatically
@@ -341,12 +359,12 @@
                 document.querySelectorAll('.image').forEach(image => {
 
                 //pwede pa to i rewrite to tailwind pero saka na hahaha
-                image.style.display = 'block';
+                image.style.display = 'flex';
             });
         }
     }
 
-
+    
   </script>
 </body>
 </html>

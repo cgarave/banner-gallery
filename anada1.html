@@ -1,94 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selectable Elements</title>
-    <style>
-        .element {
-            width: 100px;
-            height: 100px;
-            margin: 10px;
-            background-color: lightgray;
-            border: 1px solid #000;
-            display: inline-block;
-            position: relative;
-            cursor: pointer;
-        }
-        .selected-span {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 5px;
-            border-radius: 3px;
-            font-size: 12px;
-            display: none;
-        }
-        .element.selected .selected-span {
-            display: block;
-        }
-        .container {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px dashed #000;
-            min-height: 50px;
-        }
-    </style>
-</head>
-<body>
-    <div id="elements">
-        <div class="element" data-id="1">
-            <span class="selected-span">Selected</span>
-        </div>
-        <div class="element" data-id="2">
-            <span class="selected-span">Selected</span>
-        </div>
-        <div class="element" data-id="3">
-            <span class="selected-span">Selected</span>
-        </div>
-    </div>
-    <div class="container" id="container">
-        Drop Selected Items Here
-    </div>
+<div data-categories="${image.categories.join(',')}" class="image relative flex w-full max-w-[27rem] justify-center rounded-lg hover:scale-95 transition duration-300 bg-red-400">
+    <label for="${image.src}" class="absolute bottom-5 p-2 bg-[#FF9200] text-white rounded-full">
+        <input type="checkbox" id="${image.src}" class="hidden">Selected
+    </label>
+    <img src="${image.src}" class="flex-1 w-fit max-w-[27rem] h-56 cursor-pointer object-cover rounded-lg">
+  </div>`).join('')}
 
-    <script>
-        const elements = document.querySelectorAll('.element');
-        const container = document.getElementById('container');
 
-        // Function to handle removing the cloned element when clicked
-        const handleCloneClick = (clonedElement, originalElement) => {
-            clonedElement.remove();
-            originalElement.classList.remove('selected');
-        };
 
-        elements.forEach(element => {
-            element.addEventListener('click', () => {
-                // Toggle the "selected" state of the element
-                element.classList.toggle('selected');
 
-                // Check if the element is selected
-                if (element.classList.contains('selected')) {
-                    // Clone the element and add it to the second container
-                    const clonedElement = element.cloneNode(true);
-                    clonedElement.classList.remove('selected'); // Remove the selected state in the clone
-                    clonedElement.querySelector('.selected-span').style.display = 'none'; // Hide the span
-                    container.appendChild(clonedElement);
 
-                    // Add click event to remove the cloned element
-                    clonedElement.addEventListener('click', () => handleCloneClick(clonedElement, element));
-                } else {
-                    // Remove the cloned element from the container
-                    const id = element.getAttribute('data-id');
-                    const clonedElement = container.querySelector(`.element[data-id="${id}"]`);
-                    if (clonedElement) {
-                        clonedElement.remove();
-                    }
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+  flex-1 max-w-[27rem] justify-center items-center rounded-lg hover:scale-95 transition duration-300 bg-red-400 
