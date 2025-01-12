@@ -160,6 +160,7 @@
         //Referral
         { src: 'https://188betpromo.com/sandbox/banners/REFERRAL-1.jpg', categories: ['REFERRAL'] },
         { src: 'https://188betpromo.com/sandbox/banners/REFERRAL-2.jpg', categories: ['REFERRAL'] },
+        { src: 'https://188betpromo.com/sandbox/banners/REFERRAL-3.jpg', categories: ['REFERRAL'] },
         //Match Banner
         { src: 'https://188betpromo.com/sandbox/banners/MATCHBANNER-1.jpg', categories: ['MATCH BANNER', 'TROPHY'] },
         { src: 'https://188betpromo.com/sandbox/banners/MATCHBANNER-2.jpg', categories: ['MATCH BANNER', 'TROPHY'] },
@@ -204,7 +205,7 @@
     }
 
     // Shuffle the imageData array
-    //shuffleArray(imageData);
+    shuffleArray(imageData);
 
     // Generate the HTML for images in random order
     document.getElementById('image-container').innerHTML = `${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-fit max-w-[27rem] h-56 cursor-pointer rounded-lg hover:scale-95 object-cover transition duration-300">`).join('')}`;
