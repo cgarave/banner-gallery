@@ -98,7 +98,7 @@
   <script>
 
     //Add all categories here
-    const categories = ['Action', 'Basketball', 'Championship', 'Counter-Strike', 'Deposit', 'DOTA 2', 'Esports', 'Face-off', 'First Time Deposit', 'Football', 'Free Bet', 'League of Legends', 'Match Banner', 'Multiple Sports', 'Parlay', 'Rebate', 'Referral', 'Sports', 'Trophy', 'Welcome Bonus',];
+    const categories = ['Action', 'Basketball', 'Championship', 'Counter-Strike', 'Deposit', 'DOTA 2', 'Esports', 'Face-off', 'First Time Deposit', 'Football', 'Free Bet', 'League of Legends', 'Match Banner', 'Multiple Sports', 'Parlay', 'Rebate', 'Referral', 'Sports', 'Trophy', 'Welcome Bonus'];
 
     //Add all image source and its categories (can add multiple)
     const imageData = [
@@ -193,8 +193,7 @@
                                         <input type="checkbox" value="${category}" class="category hidden"> ${category}
                                     </label>`).join('')}`;
     
-    // Generate the images
-    //document.getElementById('image-container').innerHTML = `${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-fit max-w-[27rem] h-56 cursor-pointer rounded-lg hover:scale-95 object-cover transition duration-300">`).join('')}`;
+    
 
     // Fisher-Yates shuffle algorithm to shuffle the imageData array
     function shuffleArray(array) {
@@ -207,8 +206,15 @@
     // Shuffle the imageData array
     shuffleArray(imageData);
 
-    // Generate the HTML for images in random order
-    document.getElementById('image-container').innerHTML = `${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-fit max-w-[27rem] h-56 cursor-pointer rounded-lg hover:scale-95 object-cover transition duration-300">`).join('')}`;
+    //Generate the images
+    //document.getElementById('image-container').innerHTML = `${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-fit max-w-[27rem] h-56 cursor-pointer rounded-lg hover:scale-95 object-cover transition duration-300">`).join('')}`;
+
+    // Generate the HTML for images in random order 
+    //requested feature by kleine for next update
+    document.getElementById('image-container').innerHTML = `${imageData.map(image => `  <div data-categories="${image.categories.join(',')}" class="image relative flex justify-center rounded-lg overflow-hidden max-w-[20rem] hover:scale-95 transition duration-300 object-cover">
+                                                                                            <button id="${image.src}" class="selectedBtn absolute bottom-5 py-2 px-4 bg-[#FF9200] text-white rounded-full cursor-pointer hidden">Selected</button>
+                                                                                            <img src="${image.src}">
+                                                                                        </div>`).join('')}`;
 
     // Checkbox listener
     const allImagesBtn = document.getElementById('all-images')
@@ -278,20 +284,20 @@
             modalOverlay.classList.remove('hidden');
             previewModal.classList.toggle('hidden');
 
-            previewContainer.src = image.src //this fixed the duplicating image on selected container (not sure why hahaha pero need ko i-analyze siguro to)
+            previewContainer.src = image.children[1].src //requested feature by kleine for next update
+            //previewContainer.src = image.src //this fixed the duplicating image on selected container (not sure why hahaha pero need ko i-analyze siguro to)
 
             // When image is selected
             selectBtn.addEventListener('click', () => {
                 modalOverlay.classList.add('hidden');
                 selectedModal.classList.remove('hidden');
                 previewModal.classList.add('hidden')
-                document.querySelectorAll('.image').forEach(image => image.classList.replace('max-w-[27rem]', 'max-w-[570px]')); //when the selected container contains images, the size of the image automatically fit the container
-                
-                //image.classList.add('border-2', 'border-blue-600'); //for selected images
+                document.querySelectorAll('.image').forEach(image => image.classList.replace('max-w-[20rem]', 'max-w-[22rem]')); //when the selected container contains images, the size of the image automatically fit the container
 
                 if(!imageSet.has(previewContainer.src) && selectedContainer.children.length < 3){
                     imageSet.add(previewContainer.src)
                     const newDiv = document.createElement('div');
+                    //creating clone component 
                     newDiv.innerHTML = `<div id="remove" class="group-hover:block absolute z-10 top-2 right-2 bg-black  rounded-full p-2 hidden cursor-pointer">
                                             <span class="pointer-events-none">
                                                 <svg xmlns="http://www.w3.org/2000/svg"  width="14"  height="14"  viewBox="0 0 24 24"  fill="none"  stroke="white"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
@@ -300,7 +306,9 @@
                                         <div class="group-hover:block absolute z-0 bg-white opacity-20 h-full w-full hidden"></div>
                                         <img src="${previewContainer.src}">`
                     newDiv.classList.add('selected', 'group', 'rounded-lg', 'overflow-hidden', 'relative');
+                    newDiv.id = previewContainer.src + '[selected]' //adding IDs to every component
                     selectedContainer.appendChild(newDiv)
+                    document.getElementById(previewContainer.src).classList.remove('hidden')
                 }
             })
 
@@ -321,27 +329,30 @@
 
     
     //Selected section
+    //removing selected image from selected container
     selectedModal.addEventListener('click', (e) => {
         let currentSrc = e.target.parentElement.children[2].src //Getting src of current selection
         if(e.target.id === 'remove'){
             selectedContainer.removeChild(e.target.parentElement);
             imageSet.delete(currentSrc);
+            document.getElementById(currentSrc).classList.add('hidden')
         }
         if(selectedContainer.children.length == 0){
             selectedModal.classList.add('hidden');
-            document.querySelectorAll('.image').forEach(image => image.classList.replace('max-w-[570px]', 'max-w-[27rem]'));
+            document.querySelectorAll('.image').forEach(image => image.classList.replace('max-w-[22rem]', 'max-w-[20rem]'));
         }
     })
     
 
     // Try lang
+    //function to filter images
     function filterImages(){
         const selectedCategories = Array.from(document.querySelectorAll('.category:checked')).map(cb => cb.value.toUpperCase());
             
         document.querySelectorAll('.image').forEach(image => {
           const imageCategories = image.getAttribute('data-categories').split(',');
           const shouldShow = selectedCategories.some(category => imageCategories.includes(category));
-          image.style.display = shouldShow ? 'block' : 'none';
+          image.style.display = shouldShow ? 'flex' : 'none';
         });
 
         // If all categories are unchecked it will tick all images checkbox automatically
@@ -352,11 +363,24 @@
                 document.querySelectorAll('.image').forEach(image => {
 
                 //pwede pa to i rewrite to tailwind pero saka na hahaha
-                image.style.display = 'block';
+                image.style.display = 'flex';
             });
         }
     }
 
+    //selected button remove function
+    document.querySelectorAll('.selectedBtn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            selectedContainer.removeChild(document.getElementById(btn.id + '[selected]'))
+            imageSet.delete(btn.id)
+            document.getElementById(btn.id).classList.add('hidden')
+
+            if(selectedContainer.children.length == 0){
+            selectedModal.classList.add('hidden');
+            document.querySelectorAll('.image').forEach(image => image.classList.replace('max-w-[22rem]', 'max-w-[20rem]'));
+            }
+        })
+    })
 
   </script>
 </body>
