@@ -182,7 +182,6 @@
     ];
 
     // Generate the checkboxes and images dynamically
-    // I used map to create buttons
     document.getElementById('category-buttons').innerHTML = `
                                                             <label for="all-images" class="btn btn-outline rounded-full bg-[#FFA3012F] border-[#FFA301] text-neutral-700 font-normal hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200]">
                                                                 <input id="all-images" type="checkbox" class="hidden">
@@ -199,21 +198,18 @@
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+        [array[i], array[j]] = [array[j], array[i]]; 
       }
     }
-
-    // Shuffle the imageData array
     shuffleArray(imageData);
 
     //Generate the images
     //document.getElementById('image-container').innerHTML = `${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-fit max-w-[27rem] h-56 cursor-pointer rounded-lg hover:scale-95 object-cover transition duration-300">`).join('')}`;
 
-    // Generate the HTML for images in random order 
-    //requested feature by kleine for next update
-    document.getElementById('image-container').innerHTML = `${imageData.map(image => `  <div data-categories="${image.categories.join(',')}" class="image relative flex justify-center rounded-lg overflow-hidden max-w-[20rem] hover:scale-95 transition duration-300 object-cover">
-                                                                                            <button id="${image.src}" class="selectedBtn absolute bottom-5 py-2 px-4 bg-[#FF9200] text-white rounded-full cursor-pointer hidden">Selected</button>
-                                                                                            <img src="${image.src}">
+
+    document.getElementById('image-container').innerHTML = `${imageData.map(image => `  <div data-categories="${image.categories.join(',')}" class="container group relative flex justify-center rounded-lg overflow-hidden max-w-[32%] hover:scale-95 transition duration-300 object-cover">
+                                                                                            <button id="${image.src}" class="selectedBtn absolute bottom-5 py-2 px-4 bg-[#FF9200] text-white rounded-full cursor-pointer hidden group-hover:block">Select</button>
+                                                                                            <img src="${image.src}" class="image">
                                                                                         </div>`).join('')}`;
 
     // Checkbox listener
@@ -239,8 +235,8 @@
     // When 'all images' button is clicked, it will uncheck all category buttons
     allImagesBtn.addEventListener('change', () => {
         if(allImagesBtn.checked == true){
-            document.querySelectorAll('.image').forEach(image => {
-                image.style.display = 'block';
+            document.querySelectorAll('.container').forEach(container => {
+                container.style.display = 'block';
                 allImagesBtn.parentElement.classList.add('bg-[#FFA3012F]');
             });
             categoryButtons.forEach(checkbox => {
@@ -283,8 +279,7 @@
         image.addEventListener('click', () => {
             modalOverlay.classList.remove('hidden');
             previewModal.classList.toggle('hidden');
-
-            previewContainer.src = image.children[1].src //requested feature by kleine for next update
+            previewContainer.src = image.src
             //previewContainer.src = image.src //this fixed the duplicating image on selected container (not sure why hahaha pero need ko i-analyze siguro to)
 
             // When image is selected
@@ -292,7 +287,7 @@
                 modalOverlay.classList.add('hidden');
                 selectedModal.classList.remove('hidden');
                 previewModal.classList.add('hidden')
-                document.querySelectorAll('.image').forEach(image => image.classList.replace('max-w-[20rem]', 'max-w-[22rem]')); //when the selected container contains images, the size of the image automatically fit the container
+                document.querySelectorAll('.container').forEach(image => image.classList.replace('max-w-[20rem]', 'max-w-[22rem]')); //when the selected container contains images, the size of the image automatically fit the container
 
                 if(!imageSet.has(previewContainer.src) && selectedContainer.children.length < 3){
                     imageSet.add(previewContainer.src)
@@ -308,16 +303,10 @@
                     newDiv.classList.add('selected', 'group', 'rounded-lg', 'overflow-hidden', 'relative');
                     newDiv.id = previewContainer.src + '[selected]' //adding IDs to every component
                     selectedContainer.appendChild(newDiv)
-                    document.getElementById(previewContainer.src).classList.remove('hidden')
+                    document.getElementById(previewContainer.src).classList.remove('hidden') //this will unhide selected button
+                    document.getElementById(previewContainer.src).textContent = 'Selected'
                 }
             })
-
-            //disabling the select button when the selected images reached 3
-            // if(selectedContainer.children.length === 3){
-            //     selectBtn.disabled = true;
-            // } else if (selectedContainer.children.length < 3){
-            //     selectBtn.disabled = false;
-            // }
             
             //will hide modal after selecting an image
             modalOverlay.addEventListener('click', () => {
@@ -335,24 +324,24 @@
         if(e.target.id === 'remove'){
             selectedContainer.removeChild(e.target.parentElement);
             imageSet.delete(currentSrc);
-            document.getElementById(currentSrc).classList.add('hidden')
+            document.getElementById(currentSrc).classList.add('hidden') //this will hide the selected button
+            document.getElementById(currentSrc).textContent = 'Select'
         }
         if(selectedContainer.children.length == 0){
             selectedModal.classList.add('hidden');
-            document.querySelectorAll('.image').forEach(image => image.classList.replace('max-w-[22rem]', 'max-w-[20rem]'));
+            document.querySelectorAll('.container').forEach(container => container.classList.replace('max-w-[22rem]', 'max-w-[20rem]'));
         }
     })
     
 
-    // Try lang
     //function to filter images
     function filterImages(){
         const selectedCategories = Array.from(document.querySelectorAll('.category:checked')).map(cb => cb.value.toUpperCase());
             
-        document.querySelectorAll('.image').forEach(image => {
-          const imageCategories = image.getAttribute('data-categories').split(',');
+        document.querySelectorAll('.container').forEach(container => {
+          const imageCategories = container.getAttribute('data-categories').split(',');
           const shouldShow = selectedCategories.some(category => imageCategories.includes(category));
-          image.style.display = shouldShow ? 'flex' : 'none';
+          container.style.display = shouldShow ? 'flex' : 'none';
         });
 
         // If all categories are unchecked it will tick all images checkbox automatically
@@ -360,24 +349,60 @@
                 allImagesBtn.checked = true;
                 allImagesBtn.parentElement.classList.add('bg-[#FFA3012F]');
 
-                document.querySelectorAll('.image').forEach(image => {
+                document.querySelectorAll('.container').forEach(container => {
 
                 //pwede pa to i rewrite to tailwind pero saka na hahaha
-                image.style.display = 'flex';
+                container.style.display = 'flex';
             });
         }
     }
 
     //selected button remove function
+    // document.querySelectorAll('.selectedBtn').forEach(btn => {
+    //     btn.addEventListener('click', () => {
+    //         selectedContainer.removeChild(document.getElementById(btn.id + '[selected]'))
+    //         imageSet.delete(btn.id)
+    //         document.getElementById(btn.id).classList.add('hidden')
+
+    //         if(selectedContainer.children.length == 0){
+    //         selectedModal.classList.add('hidden');
+    //         document.querySelectorAll('.container').forEach(container => container.classList.replace('max-w-[22rem]', 'max-w-[20rem]'));
+    //         }
+    //     })
+    // })
+
+
     document.querySelectorAll('.selectedBtn').forEach(btn => {
         btn.addEventListener('click', () => {
-            selectedContainer.removeChild(document.getElementById(btn.id + '[selected]'))
-            imageSet.delete(btn.id)
-            document.getElementById(btn.id).classList.add('hidden')
+            imageSrc = btn.nextElementSibling.src;
 
+            if(!imageSet.has(imageSrc) && selectedContainer.children.length < 3){
+                imageSet.add(imageSrc)
+                selectedModal.classList.remove('hidden');
+                const newDiv = document.createElement('div');
+                    //creating clone component 
+                    newDiv.innerHTML = `<div id="remove" class="group-hover:block absolute z-10 top-2 right-2 bg-black  rounded-full p-2 hidden cursor-pointer">
+                                            <span class="pointer-events-none">
+                                                <svg xmlns="http://www.w3.org/2000/svg"  width="14"  height="14"  viewBox="0 0 24 24"  fill="none"  stroke="white"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                            </span>
+                                        </div>
+                                        <div class="group-hover:block absolute z-0 bg-white opacity-20 h-full w-full hidden"></div>
+                                        <img src="${imageSrc}">`
+                newDiv.classList.add('selected', 'group', 'rounded-lg', 'overflow-hidden', 'relative');
+
+                newDiv.id = imageSrc + '[selected]' //adding IDs to every component
+                selectedContainer.appendChild(newDiv)
+                document.getElementById(imageSrc).classList.remove('hidden') //this will unhide selected button
+                document.getElementById(imageSrc).textContent = 'Selected'
+            } else if (imageSet.has(imageSrc)){
+                selectedContainer.removeChild(document.getElementById(btn.id + '[selected]'))
+                imageSet.delete(btn.id)
+                document.getElementById(btn.id).classList.add('hidden')
+                document.getElementById(imageSrc).textContent = 'Select' //turn 'Selected' text of the button back to 'Select'
+            }
             if(selectedContainer.children.length == 0){
             selectedModal.classList.add('hidden');
-            document.querySelectorAll('.image').forEach(image => image.classList.replace('max-w-[22rem]', 'max-w-[20rem]'));
+            document.querySelectorAll('.container').forEach(container => container.classList.replace('max-w-[22rem]', 'max-w-[20rem]'));
             }
         })
     })
