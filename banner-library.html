@@ -208,7 +208,7 @@
 
 
     document.getElementById('image-container').innerHTML = `${imageData.map(image => `  <div data-categories="${image.categories.join(',')}" class="container group relative flex justify-center rounded-lg overflow-hidden max-w-[32%] hover:scale-95 transition duration-300 object-cover">
-                                                                                            <button id="${image.src}" class="selectedBtn absolute bottom-5 py-2 px-4 bg-[#FF9200] text-white rounded-full cursor-pointer hidden group-hover:block">Select</button>
+                                                                                            <button id="${image.src}" class="selectedBtn absolute px-10 bottom-5 btn btn-outline rounded-full bg-[#FFA3012F] border-[#FFA301] text-white font-normal hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200] hidden group-hover:block">Select</button>
                                                                                             <img src="${image.src}" class="image">
                                                                                         </div>`).join('')}`;
 
@@ -326,6 +326,7 @@
             imageSet.delete(currentSrc);
             document.getElementById(currentSrc).classList.add('hidden') //this will hide the selected button
             document.getElementById(currentSrc).textContent = 'Select'
+            document.getElementById(currentSrc).classList.replace('bg-[#FFA301]', 'bg-[#FFA3012F]')
         }
         if(selectedContainer.children.length == 0){
             selectedModal.classList.add('hidden');
@@ -393,11 +394,13 @@
                 newDiv.id = imageSrc + '[selected]' //adding IDs to every component
                 selectedContainer.appendChild(newDiv)
                 document.getElementById(imageSrc).classList.remove('hidden') //this will unhide selected button
+                document.getElementById(imageSrc).classList.replace('bg-[#FFA3012F]', 'bg-[#FFA301]') 
                 document.getElementById(imageSrc).textContent = 'Selected'
             } else if (imageSet.has(imageSrc)){
                 selectedContainer.removeChild(document.getElementById(btn.id + '[selected]'))
                 imageSet.delete(btn.id)
                 document.getElementById(btn.id).classList.add('hidden')
+                document.getElementById(btn.id).classList.replace('bg-[#FFA301]', 'bg-[#FFA3012F]')
                 document.getElementById(imageSrc).textContent = 'Select' //turn 'Selected' text of the button back to 'Select'
             }
             if(selectedContainer.children.length == 0){
