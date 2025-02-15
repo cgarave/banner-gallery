@@ -6,11 +6,16 @@
   <title>Banner Library</title>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.19/dist/full.min.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.tailwindcss.com"></script>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <style>
     #category-input::-webkit-calendar-picker-indicator {
         display: none;
         -webkit-appearance: none;
+    }
+    body {
+        font-family: 'Libre Franklin', sans-serif;
     }
   </style>
 </head>
@@ -70,14 +75,28 @@
             <button id="select-button" class="py-2 px-6 bg-[#FFA3012F] border border-[#FFA301] hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200] rounded-full font-normal text-black">Select</button>
         </div>
         <img id="image-card" src="" class="overflow-hidden w-fit">
+        <p id="keywords" class=" text-sm text-neutral-500 mt-5"></p>
     </div>
 
     <!--Selected Images-->
-    <div id="selectedImg-card" class="h-dvh w-[900px] bg-neutral-200 flex flex-col hidden">
-        <h1 class="text-neutral-700 border-b border-neutral-300 p-5 text-lg font-semibold">Selected images</h1>
-        <div id="selectedImg-container" class="grid grid-cols-3 gap-4 p-4"></div>
+    <div id="selectedImg-card" class="h-dvh w-1/4 bg-neutral-200 flex flex-col hidden">
+        <div class="flex flex-row justify-between border-b border-neutral-300 p-5 ">
+            <h1 class="text-neutral-700 text-md font-normal">Selected images</h1>
+            <button id="view-all-button" class="text-blue-500 text-md font-semibold">VIEW ALL</button>
+        </div>
+        <div id="selectedImg-container" class="grid grid-cols-1 gap-4 p-4"></div>
     </div>
 
+    <!--View All-->
+    <div id="modal-overlay" class="w-full h-full bg-black opacity-70 absolute z-20 hidden"></div>
+    <div id="view-all-modal" class="min-w-[700px] w-full max-w-[1100px] h-fit bg-neutral-100 rounded-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col z-30 hidden">
+        <div class="flex flex-row justify-between font-semibold text-neutral-700 text-md border-b border-neutral-300 p-5">
+            <p>Selected image/s</p>
+            <svg id="hide-modal" xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x cursor-pointer"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+        </div>
+        <p class="p-5 text-neutral-700"><b>Note:</b> Take a screenshot of the selected image/s and include it in your design request.</p>
+        <div id="view-all-container" class="grid grid-cols-2 gap-5 p-5 overflow-hidden"></div>
+    </div>
 
 
 
@@ -209,7 +228,7 @@
 
     document.getElementById('image-container').innerHTML = `${imageData.map(image => `  <div data-categories="${image.categories.join(',')}" class="container group relative flex justify-center rounded-lg overflow-hidden max-w-[32%] hover:scale-95 transition duration-300 object-cover">
                                                                                             <button id="${image.src}" class="selectedBtn absolute px-10 bottom-5 btn btn-outline rounded-full bg-[#FFA3012F] border-[#FFA301] text-white font-normal hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200] hidden group-hover:block">Select</button>
-                                                                                            <img src="${image.src}" class="image">
+                                                                                            <img src="${image.src}" class="image" key="${image.categories}">
                                                                                         </div>`).join('')}`;
 
     // Checkbox listener
@@ -270,8 +289,10 @@
     const previewModal = document.getElementById('select-modal');
     const selectBtn = document.getElementById('select-button');
     let previewContainer = document.getElementById('image-card');
+    let keywords = document.getElementById('keywords');
     const selectedModal = document.getElementById('selectedImg-card');
     let selectedContainer = document.getElementById('selectedImg-container');
+    let viewAllContainer = document.getElementById('view-all-container');
     let imageSet = new Set();
 
 
@@ -280,6 +301,7 @@
             modalOverlay.classList.remove('hidden');
             previewModal.classList.toggle('hidden');
             previewContainer.src = image.src
+            keywords.textContent = '#' + image.getAttribute('key').toLowerCase().replaceAll(',', ' #').trim(); //displaying all keywords attached to each image
             //previewContainer.src = image.src //this fixed the duplicating image on selected container (not sure why hahaha pero need ko i-analyze siguro to)
 
             // When image is selected
@@ -302,8 +324,15 @@
                                         <img src="${previewContainer.src}">`
                     newDiv.classList.add('selected', 'group', 'rounded-lg', 'overflow-hidden', 'relative');
                     newDiv.id = previewContainer.src + '[selected]' //adding IDs to every component
-                    selectedContainer.appendChild(newDiv)
+                    selectedContainer.appendChild(newDiv);
+
+                    const cloneImg = document.createElement('img')
+                    cloneImg.src = previewContainer.src
+                    cloneImg.id = previewContainer.src + '[selected2]'
+                    viewAllContainer.appendChild(cloneImg)
+
                     document.getElementById(previewContainer.src).classList.remove('hidden') //this will unhide selected button
+                    document.getElementById(previewContainer.src).classList.replace('bg-[#FFA3012F]', 'bg-[#FFA301]') 
                     document.getElementById(previewContainer.src).textContent = 'Selected'
                 }
             })
@@ -311,7 +340,8 @@
             //will hide modal after selecting an image
             modalOverlay.addEventListener('click', () => {
                 modalOverlay.classList.add('hidden');
-                previewModal.classList.add('hidden')
+                previewModal.classList.add('hidden');
+                document.getElementById('view-all-modal').classList.add('hidden')
             })
         })
     })
@@ -323,6 +353,7 @@
         let currentSrc = e.target.parentElement.children[2].src //Getting src of current selection
         if(e.target.id === 'remove'){
             selectedContainer.removeChild(e.target.parentElement);
+            viewAllContainer.removeChild(document.getElementById(currentSrc + '[selected2]'))
             imageSet.delete(currentSrc);
             document.getElementById(currentSrc).classList.add('hidden') //this will hide the selected button
             document.getElementById(currentSrc).textContent = 'Select'
@@ -372,7 +403,7 @@
     //     })
     // })
 
-
+    //select/unselect on hover
     document.querySelectorAll('.selectedBtn').forEach(btn => {
         btn.addEventListener('click', () => {
             imageSrc = btn.nextElementSibling.src;
@@ -393,11 +424,18 @@
 
                 newDiv.id = imageSrc + '[selected]' //adding IDs to every component
                 selectedContainer.appendChild(newDiv)
+
+                const cloneImg = document.createElement('img');
+                cloneImg.src = imageSrc;
+                cloneImg.id = imageSrc + '[selected2]'
+                viewAllContainer.appendChild(cloneImg)
+
                 document.getElementById(imageSrc).classList.remove('hidden') //this will unhide selected button
                 document.getElementById(imageSrc).classList.replace('bg-[#FFA3012F]', 'bg-[#FFA301]') 
                 document.getElementById(imageSrc).textContent = 'Selected'
             } else if (imageSet.has(imageSrc)){
                 selectedContainer.removeChild(document.getElementById(btn.id + '[selected]'))
+                viewAllContainer.removeChild(document.getElementById(btn.id + '[selected2]'))
                 imageSet.delete(btn.id)
                 document.getElementById(btn.id).classList.add('hidden')
                 document.getElementById(btn.id).classList.replace('bg-[#FFA301]', 'bg-[#FFA3012F]')
@@ -407,6 +445,23 @@
             selectedModal.classList.add('hidden');
             document.querySelectorAll('.container').forEach(container => container.classList.replace('max-w-[22rem]', 'max-w-[20rem]'));
             }
+        })
+    })
+
+    //view all selected images
+    document.getElementById('view-all-button').addEventListener('click', () => {
+        document.getElementById('view-all-modal').classList.remove('hidden')
+        modalOverlay.classList.remove('hidden');
+        if(viewAllContainer.children.length <= 1){
+            viewAllContainer.classList.replace('grid-cols-2', 'grid-cols-1')
+        } else {
+            viewAllContainer.classList.replace('grid-cols-1', 'grid-cols-2')
+        }
+
+        
+        document.getElementById('hide-modal').addEventListener('click', () => {
+            document.getElementById('view-all-modal').classList.add('hidden')
+            modalOverlay.classList.add('hidden');
         })
     })
 
