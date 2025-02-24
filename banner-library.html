@@ -1,470 +1,69 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-neutral-100">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Banner Library</title>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.19/dist/full.min.css" rel="stylesheet" type="text/css" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <style>
-    #category-input::-webkit-calendar-picker-indicator {
-        display: none;
-        -webkit-appearance: none;
-    }
-    body {
-        font-family: 'Libre Franklin', sans-serif;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banner Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="h-dvh w-screen flex flex-row overflow-hidden">
-    <div class="px-14 pt-10 w-full h-full flex flex-col gap-y-6"> <!--mx-56 & mx-14-->
-        <div class="flex flex-row justify-between items-center">
-            <h1 class="text-neutral-700 font-semibold text-4xl">Banner <span class="text-[#FF9200]">Library</span></h1>
-            <label class="input input-bordered flex items-center rounded-full gap-4 bg-neutral-200 w-96">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  class="h-4 w-4 opacity-70">
-                  <path
-                    fill-rule="evenodd"
-                    d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                    clip-rule="evenodd" />
-                </svg>
-                <input id="search" list="category" class="grow text-black" placeholder="Search keyword" autocomplete="off"/>
-                    <datalist id="category">
-                        <option value="Action">
-                        <option value="Basketball">
-                        <option value="Bonus">
-                        <option value="Championship">
-                        <option value="Counter-Strike">
-                        <option value="Deposit">
-                        <option value="DOTA 2">
-                        <option value="Esports">
-                        <option value="Face-off">
-                        <option value="First Time Deposit">
-                        <option value="Football">
-                        <option value="Free Bet">
-                        <option value="League of Legends">
-                        <option value="Match Banner">
-                        <option value="Multiple Sports">
-                        <option value="Parlay">
-                        <option value="Rebate">
-                        <option value="Referral">
-                        <option value="Sports">
-                        <option value="Trophy">
-                        <option value="Welcome Bonus">
-                    </datalist>
-              </label>
-        </div>
-        <div id="category-buttons" class="flex flex-wrap w-full gap-4">
-            
-            <!-- Category buttons will be injected here by JavaScript -->
-        </div>
-        <div id="image-container" class="flex flex-wrap gap-4 overflow-scroll mb-2 h-fit">
-            <!-- Images will be injected here by JavaScript -->
-        </div>
+<body class="flex justify-center items-center h-dvh w-full">
+    <div class="flex flex-col gap-y-2">
+        <input type="text" id="input" placeholder="Enter password" class="p-2 border border-neutral-300" autocomplete="off">
+        <button id="loginBtn" class="p-2 text-white bg-[#FF9200]">Login</button>
+        <p id="incorrectTxt" class="text-red-600 hidden">Incorrect password</p>
     </div>
-    <!--Select Card-->
-    <div id="modal-overlay" class="w-full h-full bg-black opacity-70 absolute hidden z-20"></div>
-    <div id="select-modal" class="w-[720px] h-fit bg-neutral-100 rounded-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col p-5 z-30 hidden">
-        <div class="flex flex-row justify-end mb-5">
-            <button id="select-button" class="py-2 px-6 bg-[#FFA3012F] border border-[#FFA301] hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200] rounded-full font-normal text-black">Select</button>
-        </div>
-        <img id="image-card" src="" class="overflow-hidden w-fit">
-        <p id="keywords" class=" text-sm text-neutral-500 mt-5"></p>
-    </div>
+</body>
+<script>
+    const pi = document.getElementById('input');
+    const loginBtn = document.getElementById('loginBtn');
 
-    <!--Selected Images-->
-    <div id="selectedImg-card" class="h-dvh w-1/4 bg-neutral-200 flex flex-col hidden">
-        <div class="flex flex-row justify-between border-b border-neutral-300 p-5 ">
-            <h1 class="text-neutral-700 text-md font-normal">Selected images</h1>
-            <button id="view-all-button" class="text-blue-500 text-md font-semibold">VIEW ALL</button>
-        </div>
-        <div id="selectedImg-container" class="grid grid-cols-1 gap-4 p-4"></div>
-    </div>
+    const convs = (asin, encode) => {
+    const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
+    const applySaltToChar = (code) => textToChars(asin).reduce((a, b) => a ^ b, code);
+    return encode
+        .match(/.{1,2}/g)
+        .map((hex) => parseInt(hex, 16))
+        .map(applySaltToChar)
+        .map((charCode) => String.fromCharCode(charCode))
+        .join("");
+    };
 
-    <!--View All-->
-    <div id="modal-overlay" class="w-full h-full bg-black opacity-70 absolute z-20 hidden"></div>
-    <div id="view-all-modal" class="min-w-[700px] w-full max-w-[1100px] h-fit bg-neutral-100 rounded-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col z-30 hidden">
-        <div class="flex flex-row justify-between font-semibold text-neutral-700 text-md border-b border-neutral-300 p-5">
-            <p>Selected image/s</p>
-            <svg id="hide-modal" xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x cursor-pointer"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
-        </div>
-        <p class="p-5 text-neutral-700"><b>Note:</b> Take a screenshot of the selected image/s and include it in your design request.</p>
-        <div id="view-all-container" class="grid grid-cols-2 gap-5 p-5 overflow-hidden"></div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--Script starts here-->
-  <script>
-
-    //Add all categories here
-    const categories = ['Action', 'Basketball', 'Championship', 'Counter-Strike', 'Deposit', 'DOTA 2', 'Esports', 'Face-off', 'First Time Deposit', 'Football', 'Free Bet', 'League of Legends', 'Match Banner', 'Multiple Sports', 'Parlay', 'Rebate', 'Referral', 'Sports', 'Trophy', 'Welcome Bonus'];
-
-    //Add all image source and its categories (can add multiple)
-    const imageData = [
-        //All categories should be in uppercase letters
-        //Basketball
-        { src: 'https://188betpromo.com/sandbox/banners/BASKETBALL-1.jpg', categories: ['BASKETBALL', 'SPORTS', 'FACE-OFF'] },
-        { src: 'https://188betpromo.com/sandbox/banners/BASKETBALL-2.jpg', categories: ['BASKETBALL', 'SPORTS', 'FACE-OFF'] },
-        { src: 'https://188betpromo.com/sandbox/banners/BASKETBALL-3.jpg', categories: ['BASKETBALL', 'SPORTS', 'TROPHY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/BASKETBALL-4.jpg', categories: ['BASKETBALL', 'SPORTS',] },
-        { src: 'https://188betpromo.com/sandbox/banners/BASKETBALL-5.jpg', categories: ['BASKETBALL', 'SPORTS',] },
-        //CSGO
-        { src: 'https://188betpromo.com/sandbox/banners/CSGO-1.jpg', categories: ['COUNTER-STRIKE', 'ESPORTS', 'ACTION'] },
-        { src: 'https://188betpromo.com/sandbox/banners/CSGO-2.jpg', categories: ['COUNTER-STRIKE', 'ESPORTS', 'FACE-OFF'] },
-        { src: 'https://188betpromo.com/sandbox/banners/CSGO-3.jpg', categories: ['COUNTER-STRIKE', 'ESPORTS'] },
-        { src: 'https://188betpromo.com/sandbox/banners/CSGO-4.jpg', categories: ['COUNTER-STRIKE', 'ESPORTS', 'TROPHY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/CSGO-5.jpg', categories: ['COUNTER-STRIKE', 'ESPORTS', 'TROPHY'] },
-        //LOL
-        { src: 'https://188betpromo.com/sandbox/banners/LOL-1.jpg', categories: ['LEAGUE OF LEGENDS', 'ESPORTS', 'CHAMPIONSHIP'] },
-        { src: 'https://188betpromo.com/sandbox/banners/LOL-2.jpg', categories: ['LEAGUE OF LEGENDS', 'ESPORTS', ] },
-        { src: 'https://188betpromo.com/sandbox/banners/LOL-3.jpg', categories: ['LEAGUE OF LEGENDS', 'ESPORTS', 'TROPHY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/LOL-4.jpg', categories: ['LEAGUE OF LEGENDS', 'ESPORTS', 'ACTION'] },
-        //Parlay
-        { src: 'https://188betpromo.com/sandbox/banners/PARLAY-1.png', categories: ['PARLAY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/PARLAY-2.jpg', categories: ['PARLAY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/PARLAY-3.jpg', categories: ['PARLAY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/PARLAY-4.jpg', categories: ['PARLAY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/PARLAY-5.jpg', categories: ['PARLAY'] },
-        //Dota 2
-        { src: 'https://188betpromo.com/sandbox/banners/DOTA-1.jpg', categories: ['DOTA 2', 'ESPORTS', 'TROPHY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/DOTA-2.jpg', categories: ['DOTA 2', 'ESPORTS', ] },
-        { src: 'https://188betpromo.com/sandbox/banners/DOTA-3.jpg', categories: ['DOTA 2', 'ESPORTS', ] },
-        { src: 'https://188betpromo.com/sandbox/banners/DOTA-4.jpg', categories: ['DOTA 2', 'ESPORTS', 'FACE-OFF', 'TROPHY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/DOTA-5.jpg', categories: ['DOTA 2', 'ESPORTS', ] },
-        //Football
-        { src: 'https://188betpromo.com/sandbox/banners/FOOTBALL-1.jpg', categories: ['FOOTBALL', 'SPORTS', 'TROPHY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/FOOTBALL-2.jpg', categories: ['FOOTBALL', 'CHAMPIONSHIP', 'SPORTS', 'TROPHY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/FOOTBALL-3.jpg', categories: ['FOOTBALL', 'SPORTS', 'TROPHY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/FOOTBALL-4.jpg', categories: ['FOOTBALL', 'SPORTS'] },
-        { src: 'https://188betpromo.com/sandbox/banners/FOOTBALL-5.jpg', categories: ['FOOTBALL', 'SPORTS'] },
-        //FTD
-        { src: 'https://188betpromo.com/sandbox/banners/FTD-1.jpg', categories: ['FIRST TIME DEPOSIT'] },
-        { src: 'https://188betpromo.com/sandbox/banners/FTD-2.jpg', categories: ['FIRST TIME DEPOSIT'] },
-        { src: 'https://188betpromo.com/sandbox/banners/FTD-3.jpg', categories: ['FIRST TIME DEPOSIT'] },
-        { src: 'https://188betpromo.com/sandbox/banners/FTD-4.jpg', categories: ['FIRST TIME DEPOSIT'] },
-        { src: 'https://188betpromo.com/sandbox/banners/FTD-5.jpg', categories: ['FIRST TIME DEPOSIT'] },
-        //Free Bet
-        { src: 'https://188betpromo.com/sandbox/banners/FREEBET-1.jpg', categories: ['FREE BET'] },
-        { src: 'https://188betpromo.com/sandbox/banners/FREEBET-2.jpg', categories: ['FREE BET'] },
-        { src: 'https://188betpromo.com/sandbox/banners/FREEBET-3.jpg', categories: ['FREE BET'] },
-        { src: 'https://188betpromo.com/sandbox/banners/FREEBET-4.jpg', categories: ['FREE BET'] },
-        { src: 'https://188betpromo.com/sandbox/banners/FREEBET-5.jpg', categories: ['FREE BET'] },
-        { src: 'https://188betpromo.com/sandbox/banners/FREEBET-6.jpg', categories: ['FREE BET'] },
-        //Rebate
-        { src: 'https://188betpromo.com/sandbox/banners/REBATE-1.jpg', categories: ['REBATE'] },
-        { src: 'https://188betpromo.com/sandbox/banners/REBATE-2.jpg', categories: ['REBATE'] },
-        { src: 'https://188betpromo.com/sandbox/banners/REBATE-3.jpg', categories: ['REBATE'] },
-        { src: 'https://188betpromo.com/sandbox/banners/REBATE-4.jpg', categories: ['REBATE'] },
-        { src: 'https://188betpromo.com/sandbox/banners/REBATE-5.jpg', categories: ['REBATE'] },
-        //Referral
-        { src: 'https://188betpromo.com/sandbox/banners/REFERRAL-1.jpg', categories: ['REFERRAL'] },
-        { src: 'https://188betpromo.com/sandbox/banners/REFERRAL-2.jpg', categories: ['REFERRAL'] },
-        { src: 'https://188betpromo.com/sandbox/banners/REFERRAL-3.jpg', categories: ['REFERRAL'] },
-        //Match Banner
-        { src: 'https://188betpromo.com/sandbox/banners/MATCHBANNER-1.jpg', categories: ['MATCH BANNER', 'TROPHY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/MATCHBANNER-2.jpg', categories: ['MATCH BANNER', 'TROPHY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/MATCHBANNER-3.jpg', categories: ['MATCH BANNER', 'TROPHY'] },
-        //Multiple Sports
-        { src: 'https://188betpromo.com/sandbox/banners/MULTISPORT-1.jpg', categories: ['MULTIPLE SPORTS', 'TROPHY'] },
-        { src: 'https://188betpromo.com/sandbox/banners/MULTISPORT-2.jpg', categories: ['MULTIPLE SPORTS', ] },
-        { src: 'https://188betpromo.com/sandbox/banners/MULTISPORT-3.jpg', categories: ['MULTIPLE SPORTS', ] },
-        { src: 'https://188betpromo.com/sandbox/banners/MULTISPORT-4.jpg', categories: ['MULTIPLE SPORTS', ] },
-        { src: 'https://188betpromo.com/sandbox/banners/MULTISPORT-5.jpg', categories: ['MULTIPLE SPORTS', ] },
-        //DEPOSIT
-        { src: 'https://188betpromo.com/sandbox/banners/DEPOSIT-1.jpg', categories: ['DEPOSIT', ] },
-        { src: 'https://188betpromo.com/sandbox/banners/DEPOSIT-2.jpg', categories: ['DEPOSIT', ] },
-        { src: 'https://188betpromo.com/sandbox/banners/DEPOSIT-3.jpg', categories: ['DEPOSIT', ] },
-        //WELCOME BONUS
-        { src: 'https://188betpromo.com/sandbox/banners/WELCOMEBONUS-1.jpg', categories: ['WELCOME BONUS', ] },
-        { src: 'https://188betpromo.com/sandbox/banners/WELCOMEBONUS-2.jpg', categories: ['WELCOME BONUS', ] },
-        { src: 'https://188betpromo.com/sandbox/banners/WELCOMEBONUS-3.jpg', categories: ['WELCOME BONUS', ] },
-    ];
-
-    // Generate the checkboxes and images dynamically
-    document.getElementById('category-buttons').innerHTML = `
-                                                            <label for="all-images" class="btn btn-outline rounded-full bg-[#FFA3012F] border-[#FFA301] text-neutral-700 font-normal hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200]">
-                                                                <input id="all-images" type="checkbox" class="hidden">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#FFA301"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  ><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /></svg> 
-                                                                All images
-                                                            </label>
-      ${categories.map(category => `<label class="categories btn btn-outline rounded-full text-neutral-700 font-normal w-fit hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200] cursor-pointer">
-                                        <input type="checkbox" value="${category}" class="category hidden"> ${category}
-                                    </label>`).join('')}`;
-    
-    
-
-    // Fisher-Yates shuffle algorithm to shuffle the imageData array
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]]; 
-      }
+    // Utility function to set a cookie
+    function setCookie(name, value, days) {
+      const date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
     }
-    shuffleArray(imageData);
 
-    //Generate the images
-    //document.getElementById('image-container').innerHTML = `${imageData.map(image => `<img src="${image.src}" data-categories="${image.categories.join(',')}" class="image flex-1 w-fit max-w-[27rem] h-56 cursor-pointer rounded-lg hover:scale-95 object-cover transition duration-300">`).join('')}`;
+    // Utility function to get a cookie
+    function getCookie(name) {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        const [key, value] = cookie.trim().split('=');
+        if (key === name) {
+          return value;
+        }
+      }
+      return null;
+    }
 
+    loginBtn.addEventListener('click', () => {
 
-    document.getElementById('image-container').innerHTML = `${imageData.map(image => `  <div data-categories="${image.categories.join(',')}" class="container group relative flex justify-center rounded-lg overflow-hidden max-w-[32%] hover:scale-95 transition duration-300 object-cover">
-                                                                                            <button id="${image.src}" class="selectedBtn absolute px-10 bottom-5 btn btn-outline rounded-full bg-[#FFA3012F] border-[#FFA301] text-white font-normal hover:bg-[#FF9200] hover:text-white hover:border-[#FF9200] hidden group-hover:block">Select</button>
-                                                                                            <img src="${image.src}" class="image" key="${image.categories}">
-                                                                                        </div>`).join('')}`;
+        if(pi.value === convs("486f7e3b3232462b68784a7873", "103726636a6a1e73302012202b")){
+            setCookie('loggedIn', 'true', 1);
+            window.location.href = convs("486f7e3b3232462b68784a7873", "3f333b3c7c3a263f3e");
+        } else {
+            document.getElementById('incorrectTxt').classList.remove('hidden')
+        }
+    })
+    // Check login status on page load
+    if (getCookie('loggedIn') === 'true') {
+      window.location.href = convs("486f7e3b3232462b68784a7873", "3f333b3c7c3a263f3e"); 
+    }
 
-    // Checkbox listener
-    const allImagesBtn = document.getElementById('all-images')
-    const categoryButtons = document.querySelectorAll('.category');
-
-    categoryButtons.forEach(checkbox => {
-        checkbox.addEventListener('change', (e) => {
-            if(checkbox.checked === true){
-                checkbox.parentElement.classList.add('bg-[#FF9200]', 'border-[#FF9200]');
-                checkbox.parentElement.classList.replace('text-neutral-700', 'text-white');
-                allImagesBtn.checked = false;
-                //all images button
-                allImagesBtn.parentElement.classList.remove('bg-[#FFA3012F]');
-            } else if(checkbox.checked === false){
-                checkbox.parentElement.classList.remove('bg-[#FF9200]', 'border-[#FF9200]');
-                checkbox.parentElement.classList.replace('text-white', 'text-neutral-700');
-            }
-            filterImages();
-        });
+    document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
     });
 
-    // When 'all images' button is clicked, it will uncheck all category buttons
-    allImagesBtn.addEventListener('change', () => {
-        if(allImagesBtn.checked == true){
-            document.querySelectorAll('.container').forEach(container => {
-                container.style.display = 'block';
-                allImagesBtn.parentElement.classList.add('bg-[#FFA3012F]');
-            });
-            categoryButtons.forEach(checkbox => {
-                checkbox.checked = false;
-                checkbox.parentElement.classList.remove('bg-[#FF9200]');
-                checkbox.parentElement.classList.remove('border-[#FF9200]');
-                checkbox.parentElement.classList.replace('text-white', 'text-neutral-700');
-            })
-        }
-    })
-
-    // Search bar
-    let searchRes = Array.from(document.querySelectorAll('.category')).map(res => res.value.toUpperCase()) //To collect all 'value' of each checkbox passing it to res then converting it to array then pass to searchRes. Sana tama pagkakaintindi ko haha
-    const searchBar = document.getElementById('search');
-    searchBar.addEventListener('change', () => {
-        if(searchRes.includes(searchBar.value.toUpperCase())){ //compare the entered value from search bar to searchRes. Once true it will -->
-            categoryButtons.forEach(checkbox => { //iterating to all checkboxes again to compare the search haha parang pwede ata paikliin to
-                if(searchBar.value.toUpperCase() == checkbox.value.toUpperCase()){
-                    checkbox.parentElement.classList.add('bg-[#FF9200]', 'border-[#FF9200]');
-                    checkbox.parentElement.classList.replace('text-neutral-700', 'text-white');
-                    checkbox.checked = true;
-                    allImagesBtn.checked = false;
-                    filterImages();
-                }
-            })
-        }
-    })
-
-    // Image preview
-    const modalOverlay = document.getElementById('modal-overlay');
-    const previewModal = document.getElementById('select-modal');
-    const selectBtn = document.getElementById('select-button');
-    let previewContainer = document.getElementById('image-card');
-    let keywords = document.getElementById('keywords');
-    const selectedModal = document.getElementById('selectedImg-card');
-    let selectedContainer = document.getElementById('selectedImg-container');
-    let viewAllContainer = document.getElementById('view-all-container');
-    let imageSet = new Set();
-
-
-    document.querySelectorAll('.image').forEach(image => {
-        image.addEventListener('click', () => {
-            modalOverlay.classList.remove('hidden');
-            previewModal.classList.toggle('hidden');
-            previewContainer.src = image.src
-            keywords.textContent = '#' + image.getAttribute('key').toLowerCase().replaceAll(',', ' #').trim(); //displaying all keywords attached to each image
-            //previewContainer.src = image.src //this fixed the duplicating image on selected container (not sure why hahaha pero need ko i-analyze siguro to)
-
-            // When image is selected
-            selectBtn.addEventListener('click', () => {
-                modalOverlay.classList.add('hidden');
-                selectedModal.classList.remove('hidden');
-                previewModal.classList.add('hidden')
-                document.querySelectorAll('.container').forEach(image => image.classList.replace('max-w-[20rem]', 'max-w-[22rem]')); //when the selected container contains images, the size of the image automatically fit the container
-
-                if(!imageSet.has(previewContainer.src) && selectedContainer.children.length < 3){
-                    imageSet.add(previewContainer.src)
-                    const newDiv = document.createElement('div');
-                    //creating clone component 
-                    newDiv.innerHTML = `<div id="remove" class="group-hover:block absolute z-10 top-2 right-2 bg-black  rounded-full p-2 hidden cursor-pointer">
-                                            <span class="pointer-events-none">
-                                                <svg xmlns="http://www.w3.org/2000/svg"  width="14"  height="14"  viewBox="0 0 24 24"  fill="none"  stroke="white"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
-                                            </span>
-                                        </div>
-                                        <div class="group-hover:block absolute z-0 bg-white opacity-20 h-full w-full hidden"></div>
-                                        <img src="${previewContainer.src}">`
-                    newDiv.classList.add('selected', 'group', 'rounded-lg', 'overflow-hidden', 'relative');
-                    newDiv.id = previewContainer.src + '[selected]' //adding IDs to every component
-                    selectedContainer.appendChild(newDiv);
-
-                    const cloneImg = document.createElement('img')
-                    cloneImg.src = previewContainer.src
-                    cloneImg.id = previewContainer.src + '[selected2]'
-                    viewAllContainer.appendChild(cloneImg)
-
-                    document.getElementById(previewContainer.src).classList.remove('hidden') //this will unhide selected button
-                    document.getElementById(previewContainer.src).classList.replace('bg-[#FFA3012F]', 'bg-[#FFA301]') 
-                    document.getElementById(previewContainer.src).textContent = 'Selected'
-                }
-            })
-            
-            //will hide modal after selecting an image
-            modalOverlay.addEventListener('click', () => {
-                modalOverlay.classList.add('hidden');
-                previewModal.classList.add('hidden');
-                document.getElementById('view-all-modal').classList.add('hidden')
-            })
-        })
-    })
-
-    
-    //Selected section
-    //removing selected image from selected container
-    selectedModal.addEventListener('click', (e) => {
-        let currentSrc = e.target.parentElement.children[2].src //Getting src of current selection
-        if(e.target.id === 'remove'){
-            selectedContainer.removeChild(e.target.parentElement);
-            viewAllContainer.removeChild(document.getElementById(currentSrc + '[selected2]'))
-            imageSet.delete(currentSrc);
-            document.getElementById(currentSrc).classList.add('hidden') //this will hide the selected button
-            document.getElementById(currentSrc).textContent = 'Select'
-            document.getElementById(currentSrc).classList.replace('bg-[#FFA301]', 'bg-[#FFA3012F]')
-        }
-        if(selectedContainer.children.length == 0){
-            selectedModal.classList.add('hidden');
-            document.querySelectorAll('.container').forEach(container => container.classList.replace('max-w-[22rem]', 'max-w-[20rem]'));
-        }
-    })
-    
-
-    //function to filter images
-    function filterImages(){
-        const selectedCategories = Array.from(document.querySelectorAll('.category:checked')).map(cb => cb.value.toUpperCase());
-            
-        document.querySelectorAll('.container').forEach(container => {
-          const imageCategories = container.getAttribute('data-categories').split(',');
-          const shouldShow = selectedCategories.some(category => imageCategories.includes(category));
-          container.style.display = shouldShow ? 'flex' : 'none';
-        });
-
-        // If all categories are unchecked it will tick all images checkbox automatically
-        if(selectedCategories.length === 0){
-                allImagesBtn.checked = true;
-                allImagesBtn.parentElement.classList.add('bg-[#FFA3012F]');
-
-                document.querySelectorAll('.container').forEach(container => {
-
-                //pwede pa to i rewrite to tailwind pero saka na hahaha
-                container.style.display = 'flex';
-            });
-        }
-    }
-
-    //selected button remove function
-    // document.querySelectorAll('.selectedBtn').forEach(btn => {
-    //     btn.addEventListener('click', () => {
-    //         selectedContainer.removeChild(document.getElementById(btn.id + '[selected]'))
-    //         imageSet.delete(btn.id)
-    //         document.getElementById(btn.id).classList.add('hidden')
-
-    //         if(selectedContainer.children.length == 0){
-    //         selectedModal.classList.add('hidden');
-    //         document.querySelectorAll('.container').forEach(container => container.classList.replace('max-w-[22rem]', 'max-w-[20rem]'));
-    //         }
-    //     })
-    // })
-
-    //select/unselect on hover
-    document.querySelectorAll('.selectedBtn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            imageSrc = btn.nextElementSibling.src;
-
-            if(!imageSet.has(imageSrc) && selectedContainer.children.length < 3){
-                imageSet.add(imageSrc)
-                selectedModal.classList.remove('hidden');
-                const newDiv = document.createElement('div');
-                    //creating clone component 
-                    newDiv.innerHTML = `<div id="remove" class="group-hover:block absolute z-10 top-2 right-2 bg-black  rounded-full p-2 hidden cursor-pointer">
-                                            <span class="pointer-events-none">
-                                                <svg xmlns="http://www.w3.org/2000/svg"  width="14"  height="14"  viewBox="0 0 24 24"  fill="none"  stroke="white"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
-                                            </span>
-                                        </div>
-                                        <div class="group-hover:block absolute z-0 bg-white opacity-20 h-full w-full hidden"></div>
-                                        <img src="${imageSrc}">`
-                newDiv.classList.add('selected', 'group', 'rounded-lg', 'overflow-hidden', 'relative');
-
-                newDiv.id = imageSrc + '[selected]' //adding IDs to every component
-                selectedContainer.appendChild(newDiv)
-
-                const cloneImg = document.createElement('img');
-                cloneImg.src = imageSrc;
-                cloneImg.id = imageSrc + '[selected2]'
-                viewAllContainer.appendChild(cloneImg)
-
-                document.getElementById(imageSrc).classList.remove('hidden') //this will unhide selected button
-                document.getElementById(imageSrc).classList.replace('bg-[#FFA3012F]', 'bg-[#FFA301]') 
-                document.getElementById(imageSrc).textContent = 'Selected'
-            } else if (imageSet.has(imageSrc)){
-                selectedContainer.removeChild(document.getElementById(btn.id + '[selected]'))
-                viewAllContainer.removeChild(document.getElementById(btn.id + '[selected2]'))
-                imageSet.delete(btn.id)
-                document.getElementById(btn.id).classList.add('hidden')
-                document.getElementById(btn.id).classList.replace('bg-[#FFA301]', 'bg-[#FFA3012F]')
-                document.getElementById(imageSrc).textContent = 'Select' //turn 'Selected' text of the button back to 'Select'
-            }
-            if(selectedContainer.children.length == 0){
-            selectedModal.classList.add('hidden');
-            document.querySelectorAll('.container').forEach(container => container.classList.replace('max-w-[22rem]', 'max-w-[20rem]'));
-            }
-        })
-    })
-
-    //view all selected images
-    document.getElementById('view-all-button').addEventListener('click', () => {
-        document.getElementById('view-all-modal').classList.remove('hidden')
-        modalOverlay.classList.remove('hidden');
-        if(viewAllContainer.children.length <= 1){
-            viewAllContainer.classList.replace('grid-cols-2', 'grid-cols-1')
-        } else {
-            viewAllContainer.classList.replace('grid-cols-1', 'grid-cols-2')
-        }
-
-        
-        document.getElementById('hide-modal').addEventListener('click', () => {
-            document.getElementById('view-all-modal').classList.add('hidden')
-            modalOverlay.classList.add('hidden');
-        })
-    })
-
-  </script>
-</body>
+</script>
 </html>
