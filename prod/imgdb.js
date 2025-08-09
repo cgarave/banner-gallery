@@ -1,3 +1,25 @@
+//Add all categories here
+const categories = ['Action', 
+                    'Basketball', 
+                    'Championship', 
+                    'Counter-Strike', 
+                    'Deposit', 
+                    'DOTA 2', 
+                    'Esports', 
+                    'Face-off', 
+                    'First Time Deposit', 
+                    'Football', 
+                    'Free Bet', 
+                    'League of Legends', 
+                    'Match Banner', 
+                    'Multiple Sports', 
+                    'Parlay', 
+                    'Rebate', 
+                    'Referral', 
+                    'Sports', 
+                    'Trophy', 
+                    'Welcome Bonus'];
+
 const promptKeys = {
     basketBall: [
         `A high-energy, tight composition featuring three players from each team lined up side by side, facing each other, with a basketball trophy positioned near their eye level atop a podium in the center of the scene. Captured from a mid-shot perspective, the camera focuses on the players' expressions and the gleaming trophy, creating an intimate and intense atmosphere. On the left, the first player in an orange jersey stands tall with complete confidence, his body upright and strong, chin raised slightly to convey self-assurance. He is Black, with his eyes locked on the opposing team, and his hand grips the basketball, poised for action. Behind him, the other two players in orange, one of whom is White with short hair and a trimmed beard, and the other Black, stand straight, exuding confidence, with their chins slightly lifted and their postures reflecting readiness and determination. On the right, the opposing grey team mirrors the formation. The lead player, a bald-headed Black man in a grey jersey, stands tall in a defensive stance, his chin raised to convey confidence and resolve. His body is upright, ready to react to any move, while his intense eyes stay fixed on the orange player. The remaining two grey players, one of whom is White with short hair and a trimmed beard, and the other Asian-American, stand behind him with confident postures, creating a strong, defensive presence. The basketball trophy, positioned near eye level, gleams under dramatic lighting. A white spotlight shines down on the trophy, highlighting its polished surface and backlighting it with a glowing halo that symbolizes victory. The wisps of smoke around the players' faces are minimized, allowing more focus on the backlit scene and the radiant trophy. The background is darker and more intense, with soft hints of a cheering crowd and stadium architecture subtly illuminated in the distance. This creates a deeper sense of focus on the players and trophy, emphasizing the high-stakes atmosphere. A bold, thick orange vector line runs diagonally behind the players and trophy, adding structure and directing the viewer’s attention. Thin, short supporting vector lines enhance the dynamic energy and intensity of the moment. The backlighting casts deep shadows on the players, accentuating their muscular tension, focused expressions, and confident stances. The polished basketball court reflects the light, heightening the cinematic feel of the composition. This tighter, backlit design perfectly captures the high-stakes energy of the moment, making it ideal for mobile landscape viewing. [imagefx] (seed 475703)`,
@@ -93,6 +115,7 @@ const promptKeys = {
 
 const imageData = [
     //All categories should be in uppercase letters
+    
     //Basketball
     { src: 'https://188betpromo.com/sandbox/banners/BASKETBALL-1.jpg', categories: ['BASKETBALL', 'SPORTS', 'FACE-OFF'], prompt: promptKeys.basketBall[0] },
     { src: 'https://188betpromo.com/sandbox/banners/BASKETBALL-2.jpg', categories: ['BASKETBALL', 'SPORTS', 'FACE-OFF'], prompt: promptKeys.basketBall[1] },

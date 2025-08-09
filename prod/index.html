@@ -17,6 +17,19 @@
     const pi = document.getElementById('input');
     const loginBtn = document.getElementById('loginBtn');
 
+    const crypt = (salt, text) => {
+    const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
+    const byteHex = (n) => ("0" + Number(n).toString(16)).substr(-2);
+    const applySaltToChar = (code) => textToChars(salt).reduce((a, b) => a ^ b, code);
+
+    return text
+      .split("")
+      .map(textToChars)
+      .map(applySaltToChar)
+      .map(byteHex)
+      .join("");
+    };
+
     const convs = (asin, encode) => {
     const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
     const applySaltToChar = (code) => textToChars(asin).reduce((a, b) => a ^ b, code);
@@ -28,6 +41,10 @@
         .join("");
     };
 
+    const dcryptd_text = convs("486f7e3b3232462b68784a7873", "103726636a6a1e73302012202b")
+    const dcryptd_html = convs("486f7e3b3232462b68784a7873", "3f333b3c7c3a263f3e")
+    
+    
     // Utility function to set a cookie
     function setCookie(name, value, days) {
       const date = new Date();
@@ -50,14 +67,17 @@
     loginBtn.addEventListener('click', () => {
 
         if(pi.value === convs("486f7e3b3232462b68784a7873", "103726636a6a1e73302012202b")){
-            setCookie('loggedIn', 'true', 1);
+            setCookie('pdmkt-loggedIn', 'true', 1);
+            window.location.href = convs("486f7e3b3232462b68784a7873", "3f333b3c7c3a263f3e");
+        } else if (pi.value === convs('486f7e3b3232462b68784a7873', '2666222633220561300661333f73')){
+            setCookie('wt-loggedIn', 'true', 1);
             window.location.href = convs("486f7e3b3232462b68784a7873", "3f333b3c7c3a263f3e");
         } else {
             document.getElementById('incorrectTxt').classList.remove('hidden')
         }
     })
     // Check login status on page load
-    if (getCookie('loggedIn') === 'true') {
+    if (getCookie('pdmkt-loggedIn') || getCookie('wt-loggedIn') === 'true') {
       window.location.href = convs("486f7e3b3232462b68784a7873", "3f333b3c7c3a263f3e"); 
     }
 
